@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BRBeaconModel.h"
 
 @interface BRBeaconActiveViewController : UIViewController
+
+@property (strong, nonatomic) BRBeaconModel *beaconModel;
 
 @property (weak, nonatomic) IBOutlet UITextField *loginTextfield;
 
