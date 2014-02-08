@@ -17,4 +17,10 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
 
+@property NSString *loginResult;
+
+@property uint16_t major;
+
+@property uint16_t minor;
+
 @end
