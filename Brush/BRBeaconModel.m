@@ -210,6 +210,11 @@ NSString *const longitudeKey = @"lon";
     [[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
 }
 
+- (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
+{
+    NSLog(@"didDetermineState");
+}
+
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region
 {
     for (CLBeacon *b in beacons) {
