@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "BRBeaconModel.h"
 
-NSMutableData* responseData;
-
 @interface BRBeaconActiveViewController : UIViewController
 
 @property (strong, nonatomic) BRBeaconModel *beaconModel;

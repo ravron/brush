@@ -81,46 +81,7 @@
 - (Boolean) checkLogin
 {
     
-    NSMutableURLRequest *request =
-    [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://brushapp.herokuapp.com/brush"]];
-    [request setHTTPMethod:@"POST"];
-    
-    NSString *postString = @"Hello, JP!";
-    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    [self.loginTextfield setText: @"Shit was jokes"];
-    
-    [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    
-    NSLog(@"%s", responseData);
-    
-    return NO;
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-    [responseData setLength:0];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    [responseData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    // Show error
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    // Once this method is invoked, "responseData" contains the complete result
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    return YES;
 }
 
 @end
