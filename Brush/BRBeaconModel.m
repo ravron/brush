@@ -89,7 +89,7 @@ NSString *const myBeaconIDKey = @"user_id_1";
 
 - (NSNumber *)numberWithMajor:(CLBeaconMajorValue)major minor:(CLBeaconMinorValue)minor
 {
-    uint32_t numPrimitive = (major << 16) & minor;
+    uint32_t numPrimitive = ((uint32_t)major << 16) | (uint32_t)minor;
     NSNumber *num = [NSNumber numberWithInt:numPrimitive];
     return num;
 }
@@ -173,9 +173,8 @@ NSString *const myBeaconIDKey = @"user_id_1";
         NSLog(@"Maj:%@ Min:%@", b.major, b.minor);
         
         // generate beacon ID as a 32-bit number, with the major as the more significant bits
-        uint32_t beaconIDPrimitive = ([b.major unsignedIntValue] << 16) & [b.minor unsignedIntValue];
-        NSNumber *beaconID = [NSNumber numberWithInt:beaconIDPrimitive];
-        
+        NSNumber *beaconID = [self numberWithMajor:[b.major unsignedIntegerValue]
+                                             minor:[b.minor unsignedIntegerValue]];
         // generate timestamp
         NSTimeInterval timestampPrimitive = [[NSDate date] timeIntervalSince1970];
         NSNumber *timestamp = [NSNumber numberWithDouble:timestampPrimitive];
@@ -205,7 +204,8 @@ NSString *const myBeaconIDKey = @"user_id_1";
             // start location acquisition
             [[self locationManager] startUpdatingLocation];
             
-            NSLog(@"New brush occurred between:\n%@ (self) and\n%@", [self myBeaconID], beaconID);
+            NSLog(@"New brush occurred between:\n%i (self) and\n%i",
+                  [[self myBeaconID] intValue], [beaconID intValue]);
         } else if ([existingInstances count] == 1) {
             // if it has one element, it's been seen before; check that that was > 2 hrs ago
             NSDictionary *brushEvent = [existingInstances anyObject];
