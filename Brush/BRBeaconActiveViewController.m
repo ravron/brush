@@ -33,6 +33,7 @@
 
 - (IBAction)CreateAccount:(UIButton *)sender {
     
+    /*
     static Boolean lastOn = false;
     if (lastOn == false) {
         NSLog(@"Beginning broadcast");
@@ -45,6 +46,7 @@
     }
     
     return;
+    */
     
     NSString *empty = @"";
     if([self.loginTextfield.text isEqualToString:empty]){
@@ -52,11 +54,13 @@
         [alert show];
         return;
     }
+    /*
     else if([self.passwordTextfield.text isEqualToString:empty]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Password field cannot be empty." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
         return;
     }
+     */
 
     NSDictionary *dataDict = @{@"method": @"new_user", @"username": self.loginTextfield.text};
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dataDict
@@ -82,6 +86,8 @@
                                NSString *dataString = [[NSString alloc] initWithData:data
                                                                             encoding:NSUTF8StringEncoding];
                                NSLog(@"%@", dataString);
+                               
+                               //unsigned int data = dataString intValue;
                            }];
 }
 
