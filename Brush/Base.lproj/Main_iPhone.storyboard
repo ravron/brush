@@ -9,8 +9,8 @@
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="BRBeaconActiveViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="SrB-Hk-fXD"/>
-                        <viewControllerLayoutGuide type="bottom" id="qf0-Pa-NdG"/>
+                        <viewControllerLayoutGuide type="top" id="Lb6-VU-hbj"/>
+                        <viewControllerLayoutGuide type="bottom" id="Xvq-XD-5a4"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
