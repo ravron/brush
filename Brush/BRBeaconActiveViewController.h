@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *loginTextfield;
 
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
+@property (weak, nonatomic) IBOutlet UIImageView *bg;
 
 @property NSString *loginResult;
 
