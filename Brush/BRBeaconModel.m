@@ -14,6 +14,8 @@ NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
 NSString *const beaconIDKey = @"user_id_2";
 NSString *const timestampKey = @"brush_time";
 NSString *const myBeaconIDKey = @"user_id_1";
+NSString *const latitudeKey = @"lat";
+NSString *const longitudeKey = @"lon";
 //NSString *const locationKey = @"l"
 
 @interface BRBeaconModel ()
@@ -94,6 +96,31 @@ NSString *const myBeaconIDKey = @"user_id_1";
     return num;
 }
 
+- (void)sendJSONFromDict:(NSDictionary *)dict
+{
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:nil];
+    NSMutableURLRequest *postRequest = [NSMutableURLRequest requestWithURL:
+                                        [NSURL URLWithString:@"http://brushapp.herokuapp.com/brush"]];
+    
+    // Set the request's content type to application/json
+    [postRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    // Designate the request a POST request and specify its body data
+    [postRequest setHTTPMethod:@"POST"];
+    [postRequest setHTTPBody:jsonData];
+    
+    [NSURLConnection sendAsynchronousRequest:postRequest
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data,
+                                               NSError *connectionError) {
+                               NSString *dataString = [[NSString alloc] initWithData:data
+                                                                            encoding:NSUTF8StringEncoding];
+                               NSLog(@"Received back: %@", dataString);
+                           }];
+}
+
 #pragma mark Getters
 
 // lazy loader
@@ -170,14 +197,14 @@ NSString *const myBeaconIDKey = @"user_id_1";
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region
 {
     for (CLBeacon *b in beacons) {
-        NSLog(@"Maj:%@ Min:%@", b.major, b.minor);
+        //NSLog(@"Maj:%@ Min:%@", b.major, b.minor);
         
         // generate beacon ID as a 32-bit number, with the major as the more significant bits
         NSNumber *beaconID = [self numberWithMajor:[b.major unsignedIntegerValue]
                                              minor:[b.minor unsignedIntegerValue]];
         // generate timestamp
         NSTimeInterval timestampPrimitive = [[NSDate date] timeIntervalSince1970];
-        NSNumber *timestamp = [NSNumber numberWithDouble:timestampPrimitive];
+        NSNumber *timestamp = [NSNumber numberWithInteger:(NSInteger)timestampPrimitive];
         
         NSSet *existingInstances = [[self beaconsSeen] objectsPassingTest:^BOOL(id obj, BOOL *stop) {
             NSDictionary *dict = obj;
@@ -210,7 +237,7 @@ NSString *const myBeaconIDKey = @"user_id_1";
             // if it has one element, it's been seen before; check that that was > 2 hrs ago
             NSDictionary *brushEvent = [existingInstances anyObject];
             NSNumber *objTimestamp = [brushEvent objectForKey:timestampKey];
-            NSDate *objDate = [NSDate dateWithTimeIntervalSince1970:[objTimestamp doubleValue]];
+            NSDate *objDate = [NSDate dateWithTimeIntervalSince1970:[objTimestamp intValue]];
             NSTimeInterval timeDiff = [[NSDate date] timeIntervalSinceDate:objDate];
             
             if (timeDiff > 60 * 60 * 2) {
@@ -242,6 +269,8 @@ NSString *const myBeaconIDKey = @"user_id_1";
     // extract lat/long
     CLLocation *location = [locations lastObject];
     CLLocationCoordinate2D coords = location.coordinate;
+    NSNumber *lat = [NSNumber numberWithDouble:coords.latitude];
+    NSNumber *lon = [NSNumber numberWithDouble:coords.longitude];
     
     // finish putting together, and post, the pending posts
     for (NSDictionary *incompleteBrushEvent in [self pendingPosts]) {
@@ -250,7 +279,11 @@ NSString *const myBeaconIDKey = @"user_id_1";
         NSNumber *myBeaconID = [self numberWithMajor:[self majorValue]
                                                minor:[self minorValue]];
         [brushEvent setValue:myBeaconID forKey:myBeaconIDKey];
+        [brushEvent setValue:lat forKey:latitudeKey];
+        [brushEvent setValue:lon forKey:longitudeKey];
         NSLog(@"Brush event: %@", brushEvent);
+        
+        [self sendJSONFromDict:[NSDictionary dictionaryWithDictionary:brushEvent]];
     }
 }
 

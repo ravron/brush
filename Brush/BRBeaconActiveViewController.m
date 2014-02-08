@@ -101,13 +101,6 @@
         return;
     }
     
-    /*
-    else if([self.passwordTextfield.text isEqualToString:empty]){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Password field cannot be empty." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-    }
-     */
-    
     NSDictionary *dataDict = @{@"method": @"get_user", @"username": self.loginTextfield.text};
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dataDict
                                                        options:NSJSONWritingPrettyPrinted
