@@ -44,7 +44,7 @@ NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
 
 - (void)endBroadcasting
 {
-    
+    [[self peripheralManager] stopAdvertising];
 }
 
 // lazy loader
