@@ -12,22 +12,10 @@
 
 @interface BRBeaconModel : NSObject <CLLocationManagerDelegate, CBPeripheralManagerDelegate>
 
-// Location
-@property (strong, nonatomic) CLLocationManager *locationManager;
-@property (strong, nonatomic) CBPeripheralManager *peripheralManager;
 
-// BT
-@property (strong, nonatomic) NSUUID *brushUUID;
-@property (strong, nonatomic) CLBeaconRegion *detectRegion;
-@property (strong, nonatomic) CLBeaconRegion *broadcastRegion;
-
-// State
-@property (strong, nonatomic) NSMutableArray *pendingPosts;
-
-@property (strong, nonatomic) NSMutableSet *beaconsSeen;
 
 - (void)beginMonitoring;
-- (void)beginBroadcasting;
+- (void)beginBroadcastingWithMajor:(uint16_t)major minor:(uint16_t)minor;
 - (void)endBroadcasting;
 
 @end

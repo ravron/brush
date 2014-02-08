@@ -35,11 +35,10 @@
     
     static Boolean lastOn = false;
     if (lastOn == false) {
-        NSLog(@"Beginning broadcast");
-        [[self beaconModel] beginBroadcasting];
+#warning Fix these major/minor values
+        [[self beaconModel] beginBroadcastingWithMajor:0 minor:50];
         lastOn = true;
     } else {
-        NSLog(@"Ending broadcast");
         [[self beaconModel] endBroadcasting];
         lastOn = false;
     }
