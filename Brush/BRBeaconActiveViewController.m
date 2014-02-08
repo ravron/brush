@@ -34,6 +34,10 @@
     
     self.isBroadcasting = NO;
     
+    [[self loginTextfield] setPlaceholder:@"Username"];
+    [[self twitterTextfield] setPlaceholder:@"Twitter Handle"];
+    [[self loginTextfield] setAutocorrectionType:UITextAutocorrectionTypeNo];
+    [[self twitterTextfield] setAutocorrectionType:UITextAutocorrectionTypeNo];
 }
 
 - (IBAction)CreateAccount:(UIButton *)sender {
@@ -45,7 +49,7 @@
         return;
     }
 
-    NSDictionary *dataDict = @{@"method": @"new_user", @"username": self.loginTextfield.text, @"twitter": self.passwordTextfield.text};
+    NSDictionary *dataDict = @{@"method": @"new_user", @"username": self.loginTextfield.text, @"twitter": self.twitterTextfield.text};
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dataDict
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:nil];
@@ -134,14 +138,17 @@
                                NSString *dataString = [[NSString alloc] initWithData:data
                                                                             encoding:NSUTF8StringEncoding];
                                NSLog(@"%@", dataString);
+
+                               BOOL valid;
+                               NSCharacterSet *digitCharSet = [NSCharacterSet decimalDigitCharacterSet];
+                               NSCharacterSet *inStringCharSet = [NSCharacterSet characterSetWithCharactersInString:dataString];
+                               valid = [digitCharSet isSupersetOfSet:inStringCharSet];
                                
-                               if([dataString isEqualToString:@"false"]){
+                               if(valid == FALSE){
                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Login failed" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                                    [alert show];
-                               }
-                               else{
+                               } else {
                                    unsigned int majorMinor = dataString.intValue;
-                                   
                                    [self setMinor: majorMinor & (0x0000FFFF)];
                                    [self setMajor:(majorMinor >> 16) & (0x0000FFFF)];
                                    
