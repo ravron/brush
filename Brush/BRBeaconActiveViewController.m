@@ -27,11 +27,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    self.passwordTextfield.secureTextEntry = YES;
-    [[self beaconModel] beginMonitoring];
+    //self.passwordTextfield.secureTextEntry = YES;
     
-    UIImage *img = [UIImage imageNamed:@"brush_load"];
+    UIImage *img = [UIImage imageNamed:@"brush_load c1"];
     [[self bg] setImage:img];
+    
+    self.isBroadcasting = NO;
     
 }
 
@@ -44,7 +45,7 @@
         return;
     }
 
-    NSDictionary *dataDict = @{@"method": @"new_user", @"username": self.loginTextfield.text};
+    NSDictionary *dataDict = @{@"method": @"new_user", @"username": self.loginTextfield.text, @"twitter": self.passwordTextfield.text};
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dataDict
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:nil];
@@ -89,6 +90,14 @@
 }
 
 - (IBAction)Login:(UIButton *)sender {
+    
+    if(self.isBroadcasting){
+        [[self beaconModel] endBroadcasting];
+        [[self beaconModel] endMonitoring];
+        self.isBroadcasting = NO;
+        return;
+    }
+    
     NSString *empty = @"";
     if([self.loginTextfield.text isEqualToString:empty]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!"
@@ -153,15 +162,11 @@
 
 - (void) beginBroadcast
 {
-    static Boolean lastOn = false;
-    if (lastOn == false) {
         [[self beaconModel] beginBroadcastingWithMajor:[self major] minor:[self minor]];
-        lastOn = true;
-    } else {
-        [[self beaconModel] endBroadcasting];
-        lastOn = false;
-    }
-    
+        //Begin Listening
+        [[self beaconModel] beginMonitoring];
+        self.isBroadcasting = YES;
+       
     return;
 }
 

@@ -24,4 +24,6 @@
 
 @property uint16_t minor;
 
+@property Boolean isBroadcasting;
+
 @end

@@ -56,6 +56,12 @@ NSString *const myBeaconIDKey = @"user_id_1";
     [[self locationManager] startMonitoringForRegion:[self detectRegion]];
 }
 
+- (void)endMonitoring
+{
+    NSLog(@"Ending monitor");
+    [[self locationManager] stopMonitoringForRegion:[self detectRegion]];
+}
+
 - (void)beginBroadcastingWithMajor:(uint16_t)major minor:(uint16_t)minor
 {
     NSLog(@"Beginning broadcast");
