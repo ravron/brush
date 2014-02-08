@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NSMutableData* responseData;
+
 @interface BRBeaconActiveViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UITextField *loginTextfield;
