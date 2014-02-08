@@ -25,6 +25,7 @@ NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
     if (self = [super init]) {
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
         
         _peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
     }
@@ -80,31 +81,50 @@ NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
     return _broadcastRegion;
 }
 
+// lazy loader
+- (NSMutableArray *)pendingPosts
+{
+    if (_pendingPosts == nil) {
+        _pendingPosts = [NSMutableArray array];
+    }
+    return _pendingPosts;
+}
+
+// lazy loader
+- (NSMutableSet *)beaconsSeen
+{
+    if (_beaconsSeen == nil) {
+        _beaconsSeen = [NSMutableSet set];
+    }
+    return _beaconsSeen;
+}
+
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
     NSLog(@"Entered region");
+    [[self locationManager] startRangingBeaconsInRegion:[self detectRegion]];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
 {
     NSLog(@"Exited region");
+    [[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
+- (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region
 {
-    switch (state) {
-        case CLRegionStateInside:
-        NSLog(@"Entered region via didDetermineState");
-        break;
-        
-        case CLRegionStateOutside:
-        NSLog(@"Exited region via didDetermineState");
-        
-        default:
-        break;
+    for (CLBeacon *b in beacons) {
+        NSLog(@"Maj:%@ Min:%@", b.major, b.minor);
     }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    CLLocation *location = [locations lastObject];
+    CLLocationCoordinate2D coords = location.coordinate;
+    
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
@@ -112,7 +132,7 @@ NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
     NSLog(@"Error!");
 }
 
-#pragma mark - CBPeripheralMangaerDelegate
+#pragma mark - CBPeripheralManagerDelegate
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
 {
