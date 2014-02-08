@@ -200,19 +200,31 @@ NSString *const longitudeKey = @"lon";
 
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
+    return;
     NSLog(@"Entered region");
     [[self locationManager] startRangingBeaconsInRegion:[self detectRegion]];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
 {
+    return;
     NSLog(@"Exited region");
     [[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
 {
-    NSLog(@"didDetermineState");
+    switch (state) {
+        case CLRegionStateInside:
+            [[self locationManager] startRangingBeaconsInRegion:[self detectRegion]];
+            break;
+            
+        case CLRegionStateOutside:
+            [[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
+            
+        default:
+            break;
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region
