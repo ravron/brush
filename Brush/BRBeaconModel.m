@@ -31,6 +31,7 @@ NSString *const myBeaconIDKey = @"user_id_1";
 @property (strong, nonatomic) NSMutableSet *beaconsSeen;
 @property CLBeaconMajorValue majorValue;
 @property CLBeaconMinorValue minorValue;
+@property (strong, nonatomic, readonly) NSNumber *myBeaconID;
 
 @end
 
@@ -86,6 +87,15 @@ NSString *const myBeaconIDKey = @"user_id_1";
     [[self peripheralManager] stopAdvertising];
 }
 
+- (NSNumber *)numberWithMajor:(CLBeaconMajorValue)major minor:(CLBeaconMinorValue)minor
+{
+    uint32_t numPrimitive = (major << 16) & minor;
+    NSNumber *num = [NSNumber numberWithInt:numPrimitive];
+    return num;
+}
+
+#pragma mark Getters
+
 // lazy loader
 - (NSUUID *)brushUUID
 {
@@ -136,11 +146,10 @@ NSString *const myBeaconIDKey = @"user_id_1";
     return _beaconsSeen;
 }
 
-- (NSNumber *)numberWithMajor:(CLBeaconMajorValue)major minor:(CLBeaconMinorValue)minor
+// generator
+- (NSNumber *)myBeaconID
 {
-    uint32_t numPrimitive = (major << 16) & minor;
-    NSNumber *num = [NSNumber numberWithInt:numPrimitive];
-    return num;
+    return [self numberWithMajor:[self majorValue] minor:[self minorValue]];
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -184,7 +193,6 @@ NSString *const myBeaconIDKey = @"user_id_1";
             return YES;
         }];
         
-
         if ([existingInstances count] == 0) {
             // if existingInstances is empty, this beacon hasn't been seen before; log it and post it
             // generate dictionary that will be inserted into set
@@ -196,6 +204,8 @@ NSString *const myBeaconIDKey = @"user_id_1";
             
             // start location acquisition
             [[self locationManager] startUpdatingLocation];
+            
+            NSLog(@"New brush occurred between:\n%@ (self) and\n%@", [self myBeaconID], beaconID);
         } else if ([existingInstances count] == 1) {
             // if it has one element, it's been seen before; check that that was > 2 hrs ago
             NSDictionary *brushEvent = [existingInstances anyObject];
