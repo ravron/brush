@@ -32,7 +32,7 @@
 }
 
 - (IBAction)CreateAccount:(UIButton *)sender {
-    /*
+    
     static Boolean lastOn = false;
     if (lastOn == false) {
         NSLog(@"Beginning broadcast");
@@ -44,29 +44,7 @@
         lastOn = false;
     }
     
-    
-    NSString *bodyData = @"HELLO";
-    
-    NSMutableURLRequest *postRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://brushapp.herokuapp.com/brush"]];
-    
-    // Set the request's content type to application/x-www-form-urlencoded
-    [postRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    
-    // Designate the request a POST request and specify its body data
-    [postRequest setHTTPMethod:@"POST"];
-    [postRequest setHTTPBody:[NSData dataWithBytes:[bodyData UTF8String] length:strlen([bodyData UTF8String])]];
-    
-    [NSURLConnection sendAsynchronousRequest:postRequest
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data,
-                                               NSError *connectionError) {
-                               NSLog(@"Got response:");
-                               NSString *dataString = [[NSString alloc] initWithData:data
-                                                                            encoding:NSUTF8StringEncoding];
-                               NSLog(@"%@", dataString);
-                           }];
-     
-    */
+    return;
     
     NSString *empty = @"";
     if([self.loginTextfield.text isEqualToString:empty]){

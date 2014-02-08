@@ -92,6 +92,21 @@ NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
     NSLog(@"Exited region");
 }
 
+- (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
+{
+    switch (state) {
+        case CLRegionStateInside:
+        NSLog(@"Entered region via didDetermineState");
+        break;
+        
+        case CLRegionStateOutside:
+        NSLog(@"Exited region via didDetermineState");
+        
+        default:
+        break;
+    }
+}
+
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
     NSLog(@"Error!");
