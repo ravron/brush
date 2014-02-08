@@ -7,12 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 
-@interface BRBeaconModel : NSObject <CLLocationManagerDelegate>
+@interface BRBeaconModel : NSObject <CLLocationManagerDelegate, CBPeripheralManagerDelegate>
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) CBPeripheralManager *peripheralManager;
 @property (strong, nonatomic) NSUUID *brushUUID;
 @property (strong, nonatomic) CLBeaconRegion *detectRegion;
 @property (strong, nonatomic) CLBeaconRegion *broadcastRegion;
+
+- (void)beginMonitoring;
+- (void)beginBroadcasting;
 
 @end
