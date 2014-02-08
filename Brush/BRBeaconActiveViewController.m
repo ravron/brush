@@ -86,7 +86,12 @@
                                                                             encoding:NSUTF8StringEncoding];
                                NSLog(@"%@", dataString);
                                
-                               //unsigned int data = dataString intValue;
+                               unsigned int majorMinor = dataString.intValue;
+                               unsigned int minor = majorMinor & (0x0000FFFF);
+                               unsigned int major = (majorMinor >> 16) & (0x0000FFFF);
+                               
+                               NSLog(@"Maj: %d Min: %d", major, minor);
+                               
                            }];
 }
 
