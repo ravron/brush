@@ -11,8 +11,10 @@
 NSString *const UUIDString = @"16BE5001-F2DA-417D-8E52-48B5043D5642";
 NSString *const detectIdent = @"com.RileyAvron.Brush.detect";
 NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
-NSString *const beaconIDKey = @"beaconIDKey";
-NSString *const timestampKey = @"timestampKey";
+NSString *const beaconIDKey = @"user_id_2";
+NSString *const timestampKey = @"brush_time";
+NSString *const myBeaconIDKey = @"user_id_1";
+//NSString *const locationKey = @"l"
 
 @interface BRBeaconModel ()
 // Location
@@ -40,6 +42,7 @@ NSString *const timestampKey = @"timestampKey";
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
         _locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+        _locationManager.distanceFilter = 1000;
         
         _peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
     }
@@ -133,7 +136,15 @@ NSString *const timestampKey = @"timestampKey";
     return _beaconsSeen;
 }
 
+- (NSNumber *)numberWithMajor:(CLBeaconMajorValue)major minor:(CLBeaconMinorValue)minor
+{
+    uint32_t numPrimitive = (major << 16) & minor;
+    NSNumber *num = [NSNumber numberWithInt:numPrimitive];
+    return num;
+}
+
 #pragma mark - CLLocationManagerDelegate
+#pragma mark Beacon methods
 
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
@@ -178,8 +189,13 @@ NSString *const timestampKey = @"timestampKey";
             // if existingInstances is empty, this beacon hasn't been seen before; log it and post it
             // generate dictionary that will be inserted into set
             NSDictionary *brushEvent = @{timestampKey: timestamp, beaconIDKey: beaconID};
+            
+            // put dict into seen list, and into pending posts (pending location update)
             [[self beaconsSeen] addObject:brushEvent];
-#warning post it
+            [[self pendingPosts] addObject:brushEvent];
+            
+            // start location acquisition
+            [[self locationManager] startUpdatingLocation];
         } else if ([existingInstances count] == 1) {
             // if it has one element, it's been seen before; check that that was > 2 hrs ago
             NSDictionary *brushEvent = [existingInstances anyObject];
@@ -190,7 +206,11 @@ NSString *const timestampKey = @"timestampKey";
             if (timeDiff > 60 * 60 * 2) {
                 // if it has been longer than 2 hours, update the timestamp and post it
                 objTimestamp = timestamp;
-#warning post it
+                
+                // put dict into pending posts (pending location update) (it's already in
+                // seenBeacons)
+                [[self pendingPosts] addObject:brushEvent];
+                [[self locationManager] startUpdatingLocation];
             } else {
                 // otherwise reset the timestamp to start counting down another two hours
                 objTimestamp = timestamp;
@@ -201,16 +221,32 @@ NSString *const timestampKey = @"timestampKey";
     }
 }
 
+#pragma mark Location methods
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
+    NSLog(@"Got locationManager update");
+    // one update is sufficient for low accuracy, stop updating
+    [[self locationManager] stopUpdatingLocation];
+    
+    // extract lat/long
     CLLocation *location = [locations lastObject];
     CLLocationCoordinate2D coords = location.coordinate;
     
+    // finish putting together, and post, the pending posts
+    for (NSDictionary *incompleteBrushEvent in [self pendingPosts]) {
+        NSMutableDictionary *brushEvent = [NSMutableDictionary dictionaryWithDictionary:incompleteBrushEvent];
+        
+        NSNumber *myBeaconID = [self numberWithMajor:[self majorValue]
+                                               minor:[self minorValue]];
+        [brushEvent setValue:myBeaconID forKey:myBeaconIDKey];
+        NSLog(@"Brush event: %@", brushEvent);
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-    NSLog(@"Error!");
+    NSLog(@"Error in location manager %@!", manager);
 }
 
 #pragma mark - CBPeripheralManagerDelegate
