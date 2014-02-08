@@ -216,6 +216,13 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Riley Avron";
 				TargetAttributes = {
+					11E37FB918A60B1B0042B65B = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 					11E37FDD18A60B1B0042B65B = {
 						TestTargetID = 11E37FB918A60B1B0042B65B;
 					};
