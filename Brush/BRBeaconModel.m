@@ -42,6 +42,11 @@ NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
     [[self peripheralManager] startAdvertising:beaconDict];
 }
 
+- (void)endBroadcasting
+{
+    
+}
+
 // lazy loader
 - (NSUUID *)brushUUID
 {

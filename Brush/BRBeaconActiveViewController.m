@@ -32,8 +32,35 @@
 }
 
 - (IBAction)CreateAccount:(UIButton *)sender {
-    NSLog(@"Beginning broadcast");
-    [[self beaconModel] beginBroadcasting];
+    /*static Boolean lastOn = false;
+    if (lastOn == false) {
+        NSLog(@"Beginning broadcast");
+        [[self beaconModel] beginBroadcasting];
+    } else {
+        NSLog(@"Ending broadcast");
+        [[self beaconModel] beginBroadcasting];
+    }*/
+    
+    NSString *bodyData = @"HELLO";
+    
+    NSMutableURLRequest *postRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://brushapp.herokuapp.com/brush"]];
+    
+    // Set the request's content type to application/x-www-form-urlencoded
+    [postRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    
+    // Designate the request a POST request and specify its body data
+    [postRequest setHTTPMethod:@"POST"];
+    [postRequest setHTTPBody:[NSData dataWithBytes:[bodyData UTF8String] length:strlen([bodyData UTF8String])]];
+    
+    [NSURLConnection sendAsynchronousRequest:postRequest
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data,
+                                               NSError *connectionError) {
+                               NSLog(@"Got response:");
+                               NSString *dataString = [[NSString alloc] initWithData:data
+                                                                            encoding:NSUTF8StringEncoding];
+                               NSLog(@"%@", dataString);
+                           }];
     
     /*
     NSString *empty = @"";
