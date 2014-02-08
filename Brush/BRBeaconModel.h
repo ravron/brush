@@ -16,7 +16,8 @@
 }
 
 // properties
-
+@property (readonly) BOOL isMonitoring;
+@property (readonly) BOOL isTransmitting;
 
 // methods
 - (void)beginMonitoring;
