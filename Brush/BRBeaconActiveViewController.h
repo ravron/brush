@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BRViewController : UIViewController
+@interface BRBeaconActiveViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UITextField *loginTextfield;
 

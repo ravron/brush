@@ -15,13 +15,16 @@
 		11E37FCE18A60B1B0042B65B /* BRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E37FCD18A60B1B0042B65B /* BRAppDelegate.m */; };
 		11E37FD118A60B1B0042B65B /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11E37FCF18A60B1B0042B65B /* Main_iPhone.storyboard */; };
 		11E37FD418A60B1B0042B65B /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11E37FD218A60B1B0042B65B /* Main_iPad.storyboard */; };
-		11E37FD718A60B1B0042B65B /* BRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E37FD618A60B1B0042B65B /* BRViewController.m */; };
+		11E37FD718A60B1B0042B65B /* BRBeaconActiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E37FD618A60B1B0042B65B /* BRBeaconActiveViewController.m */; };
 		11E37FD918A60B1B0042B65B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11E37FD818A60B1B0042B65B /* Images.xcassets */; };
 		11E37FE018A60B1B0042B65B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FDF18A60B1B0042B65B /* XCTest.framework */; };
 		11E37FE118A60B1B0042B65B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FBD18A60B1B0042B65B /* Foundation.framework */; };
 		11E37FE218A60B1B0042B65B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FC118A60B1B0042B65B /* UIKit.framework */; };
 		11E37FEA18A60B1B0042B65B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 11E37FE818A60B1B0042B65B /* InfoPlist.strings */; };
 		11E37FEC18A60B1B0042B65B /* BrushTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E37FEB18A60B1B0042B65B /* BrushTests.m */; };
+		11E37FF718A6132E0042B65B /* BRBeaconModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E37FF618A6132E0042B65B /* BRBeaconModel.m */; };
+		11E37FF918A6140C0042B65B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FF818A6140C0042B65B /* CoreBluetooth.framework */; };
+		11E37FFB18A614D50042B65B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FFA18A614D50042B65B /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,14 +50,18 @@
 		11E37FCD18A60B1B0042B65B /* BRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRAppDelegate.m; sourceTree = "<group>"; };
 		11E37FD018A60B1B0042B65B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		11E37FD318A60B1B0042B65B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		11E37FD518A60B1B0042B65B /* BRViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRViewController.h; sourceTree = "<group>"; };
-		11E37FD618A60B1B0042B65B /* BRViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRViewController.m; sourceTree = "<group>"; };
+		11E37FD518A60B1B0042B65B /* BRBeaconActiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBeaconActiveViewController.h; sourceTree = "<group>"; };
+		11E37FD618A60B1B0042B65B /* BRBeaconActiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBeaconActiveViewController.m; sourceTree = "<group>"; };
 		11E37FD818A60B1B0042B65B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		11E37FDE18A60B1B0042B65B /* BrushTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BrushTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		11E37FDF18A60B1B0042B65B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		11E37FE718A60B1B0042B65B /* BrushTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BrushTests-Info.plist"; sourceTree = "<group>"; };
 		11E37FE918A60B1B0042B65B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		11E37FEB18A60B1B0042B65B /* BrushTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BrushTests.m; sourceTree = "<group>"; };
+		11E37FF518A6132E0042B65B /* BRBeaconModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRBeaconModel.h; sourceTree = "<group>"; };
+		11E37FF618A6132E0042B65B /* BRBeaconModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRBeaconModel.m; sourceTree = "<group>"; };
+		11E37FF818A6140C0042B65B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		11E37FFA18A614D50042B65B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +69,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11E37FFB18A614D50042B65B /* CoreLocation.framework in Frameworks */,
+				11E37FF918A6140C0042B65B /* CoreBluetooth.framework in Frameworks */,
 				11E37FC018A60B1B0042B65B /* CoreGraphics.framework in Frameworks */,
 				11E37FC218A60B1B0042B65B /* UIKit.framework in Frameworks */,
 				11E37FBE18A60B1B0042B65B /* Foundation.framework in Frameworks */,
@@ -103,6 +112,8 @@
 		11E37FBC18A60B1B0042B65B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				11E37FFA18A614D50042B65B /* CoreLocation.framework */,
+				11E37FF818A6140C0042B65B /* CoreBluetooth.framework */,
 				11E37FBD18A60B1B0042B65B /* Foundation.framework */,
 				11E37FBF18A60B1B0042B65B /* CoreGraphics.framework */,
 				11E37FC118A60B1B0042B65B /* UIKit.framework */,
@@ -118,8 +129,10 @@
 				11E37FCD18A60B1B0042B65B /* BRAppDelegate.m */,
 				11E37FCF18A60B1B0042B65B /* Main_iPhone.storyboard */,
 				11E37FD218A60B1B0042B65B /* Main_iPad.storyboard */,
-				11E37FD518A60B1B0042B65B /* BRViewController.h */,
-				11E37FD618A60B1B0042B65B /* BRViewController.m */,
+				11E37FD518A60B1B0042B65B /* BRBeaconActiveViewController.h */,
+				11E37FD618A60B1B0042B65B /* BRBeaconActiveViewController.m */,
+				11E37FF518A6132E0042B65B /* BRBeaconModel.h */,
+				11E37FF618A6132E0042B65B /* BRBeaconModel.m */,
 				11E37FD818A60B1B0042B65B /* Images.xcassets */,
 				11E37FC418A60B1B0042B65B /* Supporting Files */,
 			);
@@ -254,8 +267,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11E37FD718A60B1B0042B65B /* BRViewController.m in Sources */,
+				11E37FD718A60B1B0042B65B /* BRBeaconActiveViewController.m in Sources */,
 				11E37FCE18A60B1B0042B65B /* BRAppDelegate.m in Sources */,
+				11E37FF718A6132E0042B65B /* BRBeaconModel.m in Sources */,
 				11E37FCA18A60B1B0042B65B /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

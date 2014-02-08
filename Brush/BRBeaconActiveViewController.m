@@ -6,13 +6,22 @@
 //  Copyright (c) 2014 Riley Avron. All rights reserved.
 //
 
-#import "BRViewController.h"
+#import "BRBeaconActiveViewController.h"
 
-@interface BRViewController ()
+@interface BRBeaconActiveViewController ()
 
 @end
 
-@implementation BRViewController
+@implementation BRBeaconActiveViewController
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super initWithCoder:aDecoder]) {
+        
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad
 {
