@@ -11,6 +11,8 @@
 NSString *const UUIDString = @"16BE5001-F2DA-417D-8E52-48B5043D5642";
 NSString *const detectIdent = @"com.RileyAvron.Brush.detect";
 NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
+NSString *const beaconIDKey = @"beaconIDKey";
+NSString *const timestampKey = @"timestampKey";
 
 @interface BRBeaconModel ()
 // Location
@@ -54,7 +56,7 @@ NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
 {
     NSLog(@"Beginning broadcast");
     
-    // make sure previous broadcast was ended
+    // make sure previous broadcast ends
     [[self peripheralManager] stopAdvertising];
     
     // set internal major and minor properties
@@ -104,11 +106,10 @@ NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
 - (CLBeaconRegion *)broadcastRegion
 {
     if (_broadcastRegion == nil) {
-        CLBeaconMajorValue majVal = 0;
-        CLBeaconMinorValue minVal = 0;
+        // default to major = minor = 0 if not created for us by call to 
         _broadcastRegion = [[CLBeaconRegion alloc] initWithProximityUUID:self.brushUUID
-                                                                   major:majVal
-                                                                   minor:minVal
+                                                                   major:0
+                                                                   minor:0
                                                               identifier:broadcastIdent];
     }
     return _broadcastRegion;
@@ -150,6 +151,52 @@ NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
 {
     for (CLBeacon *b in beacons) {
         NSLog(@"Maj:%@ Min:%@", b.major, b.minor);
+        
+        // generate beacon ID as a 32-bit number, with the major as the more significant bits
+        uint32_t beaconIDPrimitive = ([b.major unsignedIntValue] << 16) & [b.minor unsignedIntValue];
+        NSNumber *beaconID = [NSNumber numberWithInt:beaconIDPrimitive];
+        
+        // generate timestamp
+        NSTimeInterval timestampPrimitive = [[NSDate date] timeIntervalSince1970];
+        NSNumber *timestamp = [NSNumber numberWithDouble:timestampPrimitive];
+        
+        NSSet *existingInstances = [[self beaconsSeen] objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+            NSDictionary *dict = obj;
+            
+            // check if the beacon b we're examining is implicated in this brushEvent obj
+            NSNumber *objBeaconID = [dict objectForKey:beaconIDKey];
+            if ([objBeaconID isEqualToNumber:beaconID] == FALSE) {
+                // if it's not, this element does not get returned to be in existingInstances
+                return NO;
+            }
+
+            return YES;
+        }];
+        
+
+        if ([existingInstances count] == 0) {
+            // if existingInstances is empty, this beacon hasn't been seen before; log it and post it
+            // generate dictionary that will be inserted into set
+            NSDictionary *brushEvent = @{timestampKey: timestamp, beaconIDKey: beaconID};
+            [[self beaconsSeen] addObject:brushEvent];
+#warning post it
+        } else if ([existingInstances count] == 1) {
+            // if it has one element, it's been seen before; check that that was > 2 hrs ago
+            NSDictionary *brushEvent = [existingInstances anyObject];
+            NSNumber *objTimestamp = [brushEvent objectForKey:timestampKey];
+            NSDate *objDate = [NSDate dateWithTimeIntervalSince1970:[objTimestamp doubleValue]];
+            NSTimeInterval timeDiff = [[NSDate date] timeIntervalSinceDate:objDate];
+            if (timeDiff > 60 * 60 * 2) {
+                // if it has been longer than 2 hours, update the timestamp and post it
+                objTimestamp = timestamp;
+#warning post it
+            } else {
+                // otherwise reset the timestamp to start counting down another two hours
+                objTimestamp = timestamp;
+            }
+        } else {
+            NSAssert(1 == 0, @"There are %lu objects in existingInstances; should be 0 or 1.", (unsigned long)[existingInstances count]);
+        }
     }
 }
 
