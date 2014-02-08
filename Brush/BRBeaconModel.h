@@ -20,5 +20,6 @@
 
 - (void)beginMonitoring;
 - (void)beginBroadcasting;
+- (void)endBroadcasting;
 
 @end

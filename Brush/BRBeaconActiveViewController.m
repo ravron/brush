@@ -32,14 +32,18 @@
 }
 
 - (IBAction)CreateAccount:(UIButton *)sender {
-    /*static Boolean lastOn = false;
+    /*
+    static Boolean lastOn = false;
     if (lastOn == false) {
         NSLog(@"Beginning broadcast");
         [[self beaconModel] beginBroadcasting];
+        lastOn = true;
     } else {
         NSLog(@"Ending broadcast");
-        [[self beaconModel] beginBroadcasting];
-    }*/
+        [[self beaconModel] endBroadcasting];
+        lastOn = false;
+    }
+    
     
     NSString *bodyData = @"HELLO";
     
@@ -61,23 +65,46 @@
                                                                             encoding:NSUTF8StringEncoding];
                                NSLog(@"%@", dataString);
                            }];
+     
+    */
     
-    /*
     NSString *empty = @"";
     if([self.loginTextfield.text isEqualToString:empty]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Login name cannot be empty." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
+        return;
     }
     else if([self.passwordTextfield.text isEqualToString:empty]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Password field cannot be empty." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
+        return;
     }
+
+    NSDictionary *dataDict = @{@"method": @"new_user", @"username": self.loginTextfield.text};
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dataDict
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:nil];
+    NSLog(@"Json data: %@", jsonData);
+    NSString *dataString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSLog(@"JSON data as string: %@", dataString);
+    NSMutableURLRequest *postRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://brushapp.herokuapp.com/brush"]];
     
-    else{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Unknown error" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-    }
-     */
+    // Set the request's content type to application/x-www-form-urlencoded
+    [postRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    // Designate the request a POST request and specify its body data
+    [postRequest setHTTPMethod:@"POST"];
+    [postRequest setHTTPBody:jsonData];
+    
+    [NSURLConnection sendAsynchronousRequest:postRequest
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data,
+                                               NSError *connectionError) {
+                               NSLog(@"Got response:");
+                               NSString *dataString = [[NSString alloc] initWithData:data
+                                                                            encoding:NSUTF8StringEncoding];
+                               NSLog(@"%@", dataString);
+                           }];
 }
 
 - (IBAction)Login:(UIButton *)sender {
