@@ -73,7 +73,11 @@
                                NSLog(@"%@", dataString);
                                
                                if([dataString isEqualToString:@"false"]){
-                                   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"User already exists." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!"
+                                                                                   message:@"User already exists."
+                                                                                  delegate:self
+                                                                         cancelButtonTitle:@"OK"
+                                                                         otherButtonTitles:nil];
                                    [alert show];
                                }
                                
@@ -90,7 +94,11 @@
 - (IBAction)Login:(UIButton *)sender {
     NSString *empty = @"";
     if([self.loginTextfield.text isEqualToString:empty]){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Login name cannot be empty." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!"
+                                                        message:@"Login name cannot be empty."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
         [alert show];
         
         return;

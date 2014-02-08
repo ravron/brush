@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1105BE3918A6AB75007328B5 /* BRNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1105BE3818A6AB75007328B5 /* BRNetworkModel.m */; };
 		11E37FBE18A60B1B0042B65B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FBD18A60B1B0042B65B /* Foundation.framework */; };
 		11E37FC018A60B1B0042B65B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FBF18A60B1B0042B65B /* CoreGraphics.framework */; };
 		11E37FC218A60B1B0042B65B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FC118A60B1B0042B65B /* UIKit.framework */; };
@@ -38,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1105BE3718A6AB75007328B5 /* BRNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRNetworkModel.h; sourceTree = "<group>"; };
+		1105BE3818A6AB75007328B5 /* BRNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRNetworkModel.m; sourceTree = "<group>"; };
 		11E37FBA18A60B1B0042B65B /* Brush.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Brush.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11E37FBD18A60B1B0042B65B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		11E37FBF18A60B1B0042B65B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -131,6 +134,8 @@
 				11E37FD218A60B1B0042B65B /* Main_iPad.storyboard */,
 				11E37FD518A60B1B0042B65B /* BRBeaconActiveViewController.h */,
 				11E37FD618A60B1B0042B65B /* BRBeaconActiveViewController.m */,
+				1105BE3718A6AB75007328B5 /* BRNetworkModel.h */,
+				1105BE3818A6AB75007328B5 /* BRNetworkModel.m */,
 				11E37FF518A6132E0042B65B /* BRBeaconModel.h */,
 				11E37FF618A6132E0042B65B /* BRBeaconModel.m */,
 				11E37FD818A60B1B0042B65B /* Images.xcassets */,
@@ -277,6 +282,7 @@
 				11E37FD718A60B1B0042B65B /* BRBeaconActiveViewController.m in Sources */,
 				11E37FCE18A60B1B0042B65B /* BRAppDelegate.m in Sources */,
 				11E37FF718A6132E0042B65B /* BRBeaconModel.m in Sources */,
+				1105BE3918A6AB75007328B5 /* BRNetworkModel.m in Sources */,
 				11E37FCA18A60B1B0042B65B /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -496,6 +502,7 @@
 				11E37FF118A60B1B0042B65B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		11E37FF218A60B1B0042B65B /* Build configuration list for PBXNativeTarget "BrushTests" */ = {
 			isa = XCConfigurationList;
@@ -504,6 +511,7 @@
 				11E37FF418A60B1B0042B65B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

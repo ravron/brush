@@ -186,6 +186,7 @@ NSString *const timestampKey = @"timestampKey";
             NSNumber *objTimestamp = [brushEvent objectForKey:timestampKey];
             NSDate *objDate = [NSDate dateWithTimeIntervalSince1970:[objTimestamp doubleValue]];
             NSTimeInterval timeDiff = [[NSDate date] timeIntervalSinceDate:objDate];
+            
             if (timeDiff > 60 * 60 * 2) {
                 // if it has been longer than 2 hours, update the timestamp and post it
                 objTimestamp = timestamp;
