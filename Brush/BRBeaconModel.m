@@ -56,12 +56,15 @@ NSString *const longitudeKey = @"lon";
 {
     NSLog(@"Beginning monitor");
     [[self locationManager] startMonitoringForRegion:[self detectRegion]];
+    //NSLog(@"Monitoring %d regions", [[[self locationManager] monitoredRegions] count]);
 }
 
 - (void)endMonitoring
 {
     NSLog(@"Ending monitor");
     [[self locationManager] stopMonitoringForRegion:[self detectRegion]];
+    [[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
+    //NSLog(@"Monitoring %d regions", [[[self locationManager] monitoredRegions] count]);
 }
 
 - (void)beginBroadcastingWithMajor:(uint16_t)major minor:(uint16_t)minor
@@ -144,6 +147,7 @@ NSString *const longitudeKey = @"lon";
     if (_detectRegion == nil) {
         _detectRegion = [[CLBeaconRegion alloc] initWithProximityUUID:self.brushUUID
                                                            identifier:detectIdent];
+        [_detectRegion setNotifyEntryStateOnDisplay:YES];
     }
     return _detectRegion;
 }
