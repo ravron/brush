@@ -26,6 +26,7 @@
 		11E37FF718A6132E0042B65B /* BRBeaconModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E37FF618A6132E0042B65B /* BRBeaconModel.m */; };
 		11E37FF918A6140C0042B65B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FF818A6140C0042B65B /* CoreBluetooth.framework */; };
 		11E37FFB18A614D50042B65B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FFA18A614D50042B65B /* CoreLocation.framework */; };
+		2141CD2418A6B6AA0023CF40 /* brush_load.png in Resources */ = {isa = PBXBuildFile; fileRef = 2141CD2318A6B6AA0023CF40 /* brush_load.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		11E37FF618A6132E0042B65B /* BRBeaconModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRBeaconModel.m; sourceTree = "<group>"; };
 		11E37FF818A6140C0042B65B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		11E37FFA18A614D50042B65B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		2141CD2318A6B6AA0023CF40 /* brush_load.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brush_load.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 		11E37FC318A60B1B0042B65B /* Brush */ = {
 			isa = PBXGroup;
 			children = (
+				2141CD2318A6B6AA0023CF40 /* brush_load.png */,
 				11E37FCC18A60B1B0042B65B /* BRAppDelegate.h */,
 				11E37FCD18A60B1B0042B65B /* BRAppDelegate.m */,
 				11E37FCF18A60B1B0042B65B /* Main_iPhone.storyboard */,
@@ -261,6 +264,7 @@
 				11E37FD918A60B1B0042B65B /* Images.xcassets in Resources */,
 				11E37FD118A60B1B0042B65B /* Main_iPhone.storyboard in Resources */,
 				11E37FC818A60B1B0042B65B /* InfoPlist.strings in Resources */,
+				2141CD2418A6B6AA0023CF40 /* brush_load.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
