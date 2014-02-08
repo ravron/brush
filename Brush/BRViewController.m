@@ -66,6 +66,16 @@
 
 - (Boolean) checkLogin
 {
+    
+    NSMutableURLRequest *request =
+    [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://brushapp.herokuapp.com/brush"]];
+    [request setHTTPMethod:@"POST"];
+    
+    NSString *postString = @"Hello, JP!";
+    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    //[self.loginTextfield setText:<#(NSString *)#>"Shit was jokes"];
+    
     return NO;
 }
 
