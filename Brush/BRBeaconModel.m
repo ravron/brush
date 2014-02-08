@@ -294,6 +294,7 @@ NSString *const longitudeKey = @"lon";
         // add latitude and longitude to brushEvent
         [brushEvent setValue:lat forKey:latitudeKey];
         [brushEvent setValue:lon forKey:longitudeKey];
+        [brushEvent setValue:@"new_brush" forKey:@"method"];
         NSLog(@"Brush event: %@", brushEvent);
         
         // generate JSON and send to server
