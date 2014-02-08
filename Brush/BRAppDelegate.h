@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BRBeaconActiveViewController.h"
 
 @interface BRAppDelegate : UIResponder <UIApplicationDelegate>
 
