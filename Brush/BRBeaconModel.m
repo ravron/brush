@@ -16,7 +16,6 @@ NSString *const timestampKey = @"brush_time";
 NSString *const myBeaconIDKey = @"user_id_1";
 NSString *const latitudeKey = @"lat";
 NSString *const longitudeKey = @"lon";
-//NSString *const locationKey = @"l"
 
 @interface BRBeaconModel ()
 // Location
@@ -34,6 +33,9 @@ NSString *const longitudeKey = @"lon";
 @property CLBeaconMajorValue majorValue;
 @property CLBeaconMinorValue minorValue;
 @property (strong, nonatomic, readonly) NSNumber *myBeaconID;
+
+@property (readwrite) BOOL isMonitoring;
+@property (readwrite) BOOL isTransmitting;
 
 @end
 
@@ -56,6 +58,7 @@ NSString *const longitudeKey = @"lon";
 {
     NSLog(@"Beginning monitor");
     [[self locationManager] startMonitoringForRegion:[self detectRegion]];
+    [self setIsMonitoring:YES];
     //NSLog(@"Monitoring %d regions", [[[self locationManager] monitoredRegions] count]);
 }
 
@@ -64,6 +67,7 @@ NSString *const longitudeKey = @"lon";
     NSLog(@"Ending monitor");
     [[self locationManager] stopMonitoringForRegion:[self detectRegion]];
     [[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
+    [self setIsMonitoring:NO];
     //NSLog(@"Monitoring %d regions", [[[self locationManager] monitoredRegions] count]);
 }
 
@@ -90,12 +94,14 @@ NSString *const longitudeKey = @"lon";
     // start broadcast
     NSDictionary *beaconDict = [[self broadcastRegion] peripheralDataWithMeasuredPower:nil];
     [[self peripheralManager] startAdvertising:beaconDict];
+    [self setIsTransmitting:YES];
 }
 
 - (void)endBroadcasting
 {
     NSLog(@"Ending broadcast");
     [[self peripheralManager] stopAdvertising];
+    [self setIsTransmitting:NO];
 }
 
 - (NSNumber *)numberWithMajor:(CLBeaconMajorValue)major minor:(CLBeaconMinorValue)minor
