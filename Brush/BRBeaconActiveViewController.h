@@ -10,4 +10,8 @@
 
 @interface BRBeaconActiveViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UITextField *loginTextfield;
+
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextfield;
+
 @end
