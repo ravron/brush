@@ -29,7 +29,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     //self.passwordTextfield.secureTextEntry = YES;
     
-    UIImage *img = [UIImage imageNamed:@"brush_load c1"];
+    UIImage *img = [UIImage imageNamed:@"brush_load"];
     [[self bg] setImage:img];
     
     self.isBroadcasting = NO;
@@ -82,6 +82,11 @@
                                                                          otherButtonTitles:nil];
                                    [alert show];
                                }
+                               
+                               else if( dataString.length > 10){
+                                   NSLog(@"Unknown error");
+                               }
+                               
                                
                                unsigned int majorMinor = dataString.intValue;
                                
@@ -147,7 +152,14 @@
                                if(valid == FALSE){
                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Login failed" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                                    [alert show];
-                               } else {
+                               }
+                               
+                               else if(dataString.length > 10){
+                                   NSLog(@"Unknown error");
+                                   return;
+                               }
+                               
+                               else{
                                    unsigned int majorMinor = dataString.intValue;
                                    [self setMinor: majorMinor & (0x0000FFFF)];
                                    [self setMajor:(majorMinor >> 16) & (0x0000FFFF)];
