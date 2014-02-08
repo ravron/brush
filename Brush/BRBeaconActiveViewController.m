@@ -29,6 +29,10 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.passwordTextfield.secureTextEntry = YES;
     [[self beaconModel] beginMonitoring];
+    
+    UIImage *img = [UIImage imageNamed:@"brush_load"];
+    [[self bg] setImage:img];
+    
 }
 
 - (IBAction)CreateAccount:(UIButton *)sender {
