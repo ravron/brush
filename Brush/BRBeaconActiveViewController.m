@@ -32,8 +32,6 @@
     UIImage *img = [UIImage imageNamed:@"brush_load"];
     [[self bg] setImage:img];
     
-    self.isBroadcasting = NO;
-    
     [[self loginTextfield] setPlaceholder:@"Username"];
     [[self twitterTextfield] setPlaceholder:@"Twitter Handle"];
     [[self loginTextfield] setAutocorrectionType:UITextAutocorrectionTypeNo];
@@ -100,10 +98,9 @@
 
 - (IBAction)Login:(UIButton *)sender {
     
-    if(self.isBroadcasting){
+    if([[self beaconModel] isTransmitting] || [[self beaconModel] isMonitoring]){
         [[self beaconModel] endBroadcasting];
         [[self beaconModel] endMonitoring];
-        self.isBroadcasting = NO;
         return;
     }
     
@@ -152,14 +149,7 @@
                                if(valid == FALSE){
                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Login failed" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                                    [alert show];
-                               }
-                               
-                               else if(dataString.length > 10){
-                                   NSLog(@"Unknown error");
-                                   return;
-                               }
-                               
-                               else{
+                               } else {
                                    unsigned int majorMinor = dataString.intValue;
                                    [self setMinor: majorMinor & (0x0000FFFF)];
                                    [self setMajor:(majorMinor >> 16) & (0x0000FFFF)];
@@ -174,12 +164,8 @@
 
 - (void) beginBroadcast
 {
-        [[self beaconModel] beginBroadcastingWithMajor:[self major] minor:[self minor]];
-        //Begin Listening
-        [[self beaconModel] beginMonitoring];
-        self.isBroadcasting = YES;
-       
-    return;
+    [[self beaconModel] beginMonitoring];
+    [[self beaconModel] beginBroadcastingWithMajor:[self major] minor:[self minor]];
 }
 
 
