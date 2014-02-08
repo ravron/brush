@@ -13,8 +13,20 @@ NSString *const detectIdent = @"com.RileyAvron.Brush.detect";
 NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
 
 @interface BRBeaconModel ()
+// Location
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) CBPeripheralManager *peripheralManager;
 
-@property BOOL poweringUp;
+// BT
+@property (strong, nonatomic) NSUUID *brushUUID;
+@property (strong, nonatomic) CLBeaconRegion *detectRegion;
+@property (strong, nonatomic) CLBeaconRegion *broadcastRegion;
+
+// State
+@property (strong, nonatomic) NSMutableArray *pendingPosts;
+@property (strong, nonatomic) NSMutableSet *beaconsSeen;
+@property CLBeaconMajorValue majorValue;
+@property CLBeaconMinorValue minorValue;
 
 @end
 
@@ -34,17 +46,38 @@ NSString *const broadcastIdent = @"com.RileyAvron.Brush.broadcast";
 
 - (void)beginMonitoring
 {
+    NSLog(@"Beginning monitor");
     [[self locationManager] startMonitoringForRegion:[self detectRegion]];
 }
 
-- (void)beginBroadcasting
+- (void)beginBroadcastingWithMajor:(uint16_t)major minor:(uint16_t)minor
 {
+    NSLog(@"Beginning broadcast");
+    
+    // make sure previous broadcast was ended
+    [[self peripheralManager] stopAdvertising];
+    
+    // set internal major and minor properties
+    [self setMajorValue:(CLBeaconMajorValue)major];
+    [self setMinorValue:(CLBeaconMinorValue)minor];
+    
+    // generate new beacon region with given major, minor
+    CLBeaconRegion *newRegion = [[CLBeaconRegion alloc] initWithProximityUUID:self.brushUUID
+                                                                        major:self.majorValue
+                                                                        minor:self.minorValue
+                                                                   identifier:broadcastIdent];
+
+    // replace current broadcast region with new one
+    [self setBroadcastRegion:newRegion];
+    
+    // start broadcast
     NSDictionary *beaconDict = [[self broadcastRegion] peripheralDataWithMeasuredPower:nil];
     [[self peripheralManager] startAdvertising:beaconDict];
 }
 
 - (void)endBroadcasting
 {
+    NSLog(@"Ending broadcast");
     [[self peripheralManager] stopAdvertising];
 }
 
