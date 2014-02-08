@@ -279,17 +279,29 @@ NSString *const longitudeKey = @"lon";
     NSNumber *lon = [NSNumber numberWithDouble:coords.longitude];
     
     // finish putting together, and post, the pending posts
-    for (NSDictionary *incompleteBrushEvent in [self pendingPosts]) {
+    for (int i = 0; i < [[self pendingPosts] count]; i++) {
+        // grab the unfinished brush event dict from pending post
+        NSDictionary *incompleteBrushEvent = [[self pendingPosts] objectAtIndex:i];
+
+        // copy into a mutable dict
         NSMutableDictionary *brushEvent = [NSMutableDictionary dictionaryWithDictionary:incompleteBrushEvent];
         
+        // generate my ID number and add to brushEvent
         NSNumber *myBeaconID = [self numberWithMajor:[self majorValue]
                                                minor:[self minorValue]];
         [brushEvent setValue:myBeaconID forKey:myBeaconIDKey];
+        
+        // add latitude and longitude to brushEvent
         [brushEvent setValue:lat forKey:latitudeKey];
         [brushEvent setValue:lon forKey:longitudeKey];
         NSLog(@"Brush event: %@", brushEvent);
         
+        // generate JSON and send to server
         [self sendJSONFromDict:[NSDictionary dictionaryWithDictionary:brushEvent]];
+        
+        // remove corresponding incomplete object from pending posts since
+        // it's no longer pending
+        [[self pendingPosts] removeObject:incompleteBrushEvent];
     }
 }
 
