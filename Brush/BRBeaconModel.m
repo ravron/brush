@@ -68,6 +68,7 @@ NSString *const longitudeKey = @"lon";
     NSLog(@"Ending monitor");
     [[self locationManager] stopMonitoringForRegion:[self detectRegion]];
     [[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
+    [[self beaconsSeen] removeAllObjects];
     [self setIsMonitoring:NO];
 }
 
@@ -255,9 +256,11 @@ NSString *const longitudeKey = @"lon";
         CLProximity proximity = b.proximity;
         if (proximity != CLProximityNear && proximity != CLProximityImmediate) {
             // if not, continue
-            //NSLog(@"Beacon in proximity, but not close enough.");
+            NSLog(@"Beacon in proximity, but not close enough.");
             continue;
         }
+        
+        NSLog(@"Beacon in proximity!");
         
         // generate beacon ID as a 32-bit number, with the major as the more significant bits
         NSNumber *beaconID = [self numberWithMajor:[b.major unsignedIntegerValue]
@@ -306,10 +309,13 @@ NSString *const longitudeKey = @"lon";
                 
                 // put dict into pending posts (pending location update) (it's already in
                 // seenBeacons)
+                NSLog(@"New-old brush occurred between:\n%i (self) and\n%i",
+                      [[self myBeaconID] intValue], [beaconID intValue]);
                 [[self pendingPosts] addObject:brushEvent];
                 [[self locationManager] startUpdatingLocation];
             } else {
                 // otherwise reset the timestamp to start counting down another two hours
+                NSLog(@"Timestamp prohibited another brush");
                 objTimestamp = timestamp;
             }
         } else {
