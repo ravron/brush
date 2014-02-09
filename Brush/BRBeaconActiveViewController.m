@@ -32,6 +32,8 @@
     UIImage *img = [UIImage imageNamed:@"brush_load"];
     [[self bg] setImage:img];
     
+    [self logoutButton].hidden = YES;
+    
     [[self loginTextfield] setPlaceholder:@"Username"];
     [[self twitterTextfield] setPlaceholder:@"Twitter Handle"];
     [[self loginTextfield] setAutocorrectionType:UITextAutocorrectionTypeNo];
@@ -160,6 +162,20 @@
                                    [self setMajor:(majorMinor >> 16) & (0x0000FFFF)];
                                    
                                    NSLog(@"Maj: %d Min: %d", [self major], [self minor]);
+                                   
+                                   
+                                   [UIView animateWithDuration:.25
+                                                    animations:^(void){
+                                                        [self loginTextfield].hidden = YES;
+                                                        [self twitterTextfield].hidden = YES;
+                                                        [self loginButton].hidden = YES;
+                                                        [self createButton].hidden = YES;
+                                                        [self logoutButton].hidden = NO;
+                                                    }];
+                                   
+                                   
+                                
+                                   [[self loginTextfield] resignFirstResponder];
                                    
                                    [self beginBroadcast];
                                }
