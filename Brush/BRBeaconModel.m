@@ -243,9 +243,11 @@ NSString *const longitudeKey = @"lon";
     for (CLBeacon *b in beacons) {
         // check that proximity is "near" or "immediate"
         CLProximity proximity = b.proximity;
+        NSInteger rssi = b.rssi;
+        NSLog(@"RSSI: %ld", (long)rssi);
         if (proximity != CLProximityNear && proximity != CLProximityImmediate) {
             // if not, continue
-            NSLog(@"Beacon in proximity, but not close enough.");
+//            NSLog(@"Beacon in proximity, but not close enough.");
             continue;
         }
         
