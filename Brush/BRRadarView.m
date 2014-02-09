@@ -63,18 +63,8 @@
 - (void)radarPulseAchievedCallbackFraction
 {
     if (self.pinging) {
-//        NSLog(@"Trying to display ping");
         [[self pingView] displayPing:[self distanceFraction]];
     }
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

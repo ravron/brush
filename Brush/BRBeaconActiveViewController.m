@@ -29,8 +29,6 @@ const NSInteger downwardAnimationDistance = 115;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    //self.passwordTextfield.secureTextEntry = YES;
     
     UIImage *img = [UIImage imageNamed:@"brush_load"];
     [[self bg] setImage:img];
@@ -60,10 +58,6 @@ const NSInteger downwardAnimationDistance = 115;
     if([self.loginTextfield.text isEqualToString:empty]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Login name cannot be empty." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
-#warning FOR TEST
-        [[self radarView] setAnimating:(![[self radarView] animating])];
-        [[self radarView] setDistanceFraction:0.75];
-        [[self radarView] setPinging:(![[self radarView] pinging])];
         return;
     }
 
@@ -130,23 +124,15 @@ const NSInteger downwardAnimationDistance = 115;
         
         [self createButton].enabled = YES;
         
-        /*
-        [UIView animateWithDuration:0.75
-                         animations:^(void) {
-                             CGRect oldFrame = [[self bg] frame];
-                             CGRect newFrame = CGRectMake(oldFrame.origin.x,
-                                                          oldFrame.origin.y - downwardAnimationDistance,
-                                                          oldFrame.size.width,
-                                                          oldFrame.size.height);
-                             
-                             [[self bg] setFrame:newFrame];
-                         }];*/
+        [[self radarView] setAnimating:NO];
+        [[self radarView] setPinging:NO];
+        [[self radarView] setDistanceFraction:1.0];
+        
         [UIView animateWithDuration:0.75
                          animations:^(void) {
                              [[self bg] setAlpha:1];
                              [[self radarView] setAlpha:0];
                          }];
-        
         return;
     }
     
@@ -214,18 +200,6 @@ const NSInteger downwardAnimationDistance = 115;
         [self twitterTextfield].enabled = NO;
         [self createButton].enabled = NO;
         
-        /*
-        [UIView animateWithDuration:0.75
-                         animations:^(void) {
-                             CGRect oldFrame = [[self bg] frame];
-                             CGRect newFrame = CGRectMake(oldFrame.origin.x,
-                                                          oldFrame.origin.y + downwardAnimationDistance,
-                                                          oldFrame.size.width,
-                                                          oldFrame.size.height);
-                             
-                             [[self bg] setFrame:newFrame];
-                         }];
-         */
         [UIView animateWithDuration:0.75
                          animations:^(void) {
                              [[self bg] setAlpha:0];
@@ -241,6 +215,7 @@ const NSInteger downwardAnimationDistance = 115;
     [[self beaconModel] beginMonitoring];
     [[self beaconModel] beginBroadcastingWithMajor:[self major] minor:[self minor]];
     [[self radarView] setAnimating:YES];
+    [[self radarView] setPinging:NO];
 }
 
 - (void)endLocationServices
@@ -248,6 +223,7 @@ const NSInteger downwardAnimationDistance = 115;
     [[self beaconModel] endBroadcasting];
     [[self beaconModel] endMonitoring];
     [[self radarView] setAnimating:NO];
+    [[self radarView] setPinging:NO];
 }
 
 #pragma mark - BRBeaconModelDelegate

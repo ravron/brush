@@ -77,6 +77,20 @@
         CGContextDrawLinearGradient(c, lineGrad, pointPairs[i][0], pointPairs[i][1], 0);
         CGContextRestoreGState(c);
     }
+    
+    CGContextSetLineWidth(c, 1);
+    CGContextSetStrokeColorWithColor(c, [lineColor CGColor]);
+    
+    CGFloat ringDistances[3] = {0.2, 0.5, 0.8};
+    for (int i = 0; i < 3; i++) {
+        CGFloat ringDistance = ringDistances[i];
+        CGRect ringRect = CGRectMake(midX * (1 - ringDistance),
+                                     midY * (1 - ringDistance),
+                                     midX * ringDistance * 2,
+                                     midY * ringDistance * 2);
+
+        CGContextStrokeEllipseInRect(c, ringRect);
+    }
 }
 
 @end

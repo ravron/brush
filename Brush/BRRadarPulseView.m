@@ -96,10 +96,8 @@
 
 - (void)sendCallback
 {
-    if (self.delegate) {
+    if (self.delegate)
         [self.delegate radarPulseAchievedCallbackFraction];
-//        NSLog(@"Sending pulse achieved callback");
-    }
 }
 
 #pragma mark - CAAnimationDelegate
@@ -118,12 +116,5 @@
                withObject:nil
                afterDelay:delay];
 }
-
-/*
-- (void)drawRect:(CGRect)rect
-{
-    
-}
- */
 
 @end
