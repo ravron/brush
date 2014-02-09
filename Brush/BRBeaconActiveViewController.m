@@ -36,7 +36,10 @@
     [[self twitterTextfield] setPlaceholder:@"Twitter Handle"];
     [[self loginTextfield] setAutocorrectionType:UITextAutocorrectionTypeNo];
     [[self twitterTextfield] setAutocorrectionType:UITextAutocorrectionTypeNo];
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
     NSLog(@"At load-time, %ld regions monitored", (unsigned long)[[self beaconModel] numRegionsMonitored]);
 }
 
