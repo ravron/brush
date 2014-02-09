@@ -274,7 +274,11 @@ NSString *const longitudeKey = @"lon";
                 break;
         }
         
-        if (self.delegate) {
+        if (proximity == CLProximityUnknown) {
+            NSLog(@"Unknown proximity!");
+        }
+        
+        if (self.delegate && proximity != CLProximityUnknown) {
             [self.delegate beaconDetectedWithStrength:proxAmount];
         }
         

@@ -41,7 +41,8 @@
         
         // inits
         _shapeLayer = [[CAShapeLayer alloc] init];
-        _shapeLayer.strokeColor = [strokeColor CGColor];
+//        _shapeLayer.strokeColor = [strokeColor CGColor];
+        _shapeLayer.strokeColor = [[UIColor clearColor] CGColor];
         _shapeLayer.frame = self.bounds;
         _shapeLayer.fillColor = [[UIColor clearColor] CGColor];
         _shapeLayer.lineWidth = lineWidth;
