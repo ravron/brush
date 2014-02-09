@@ -164,14 +164,14 @@
                                    NSLog(@"Maj: %d Min: %d", [self major], [self minor]);
                                    
                                    
-                                   [UIView animateWithDuration:.25
+                                   /*[UIView animateWithDuration:2
                                                     animations:^(void){
                                                         [self loginTextfield].hidden = YES;
                                                         [self twitterTextfield].hidden = YES;
                                                         [self loginButton].hidden = YES;
                                                         [self createButton].hidden = YES;
                                                         [self logoutButton].hidden = NO;
-                                                    }];
+                                                    }];*/
                                    
                                    
                                 
