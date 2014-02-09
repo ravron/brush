@@ -58,6 +58,8 @@ const NSInteger downwardAnimationDistance = 115;
     if([self.loginTextfield.text isEqualToString:empty]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Login name cannot be empty." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
+#warning FOR TEST
+        [[self radarView] setAnimating:(![[self radarView] animating])];
         return;
     }
 

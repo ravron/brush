@@ -8,11 +8,14 @@
 
 #import "BRRadarBackgroundView.h"
 
-CGFloat const lineFractionGradient = .15;
-CGFloat const lineThickness = 2;
-CGFloat sideLen, minX, midX, maxX, minY, midY, maxY;
-UIColor *lineColor;
-
+@interface BRRadarBackgroundView ()
+{
+    UIColor *lineColor;
+    CGFloat lineFractionGradient;
+    CGFloat lineWidth;
+    CGFloat sideLen, minX, midX, maxX, minY, midY, maxY;
+}
+@end
 
 @implementation BRRadarBackgroundView
 
@@ -20,10 +23,16 @@ UIColor *lineColor;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        NSAssert(frame.size.height == frame.size.width, @"BRRadarView must be instantiated with a square frame!");
+        NSAssert(frame.size.height == frame.size.width, @"BRRadarBackgroundView must be instantiated with a square frame!");
         
-        lineColor = [UIColor colorWithWhite:0.75 alpha:1.0];
+        // constants
+        lineColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+        lineFractionGradient = 0.3;
+        lineWidth = 2;
+
+        
         [self setBackgroundColor:[UIColor clearColor]];
+        
         sideLen = frame.size.height;
         minX = minY = 0;
         midX = midY = CGRectGetMidX(frame);
@@ -43,22 +52,22 @@ UIColor *lineColor;
     
     // clipping rects, starting with left, going CW
     CGRect clipRects[4] = {
-        CGRectMake(minX, midY - lineThickness / 2,
-                   (sideLen / 2) + lineThickness / 2, lineThickness),
-        CGRectMake(midX - lineThickness / 2, minY, lineThickness,
-                   (sideLen / 2) + lineThickness / 2),
-        CGRectMake(midX - lineThickness / 2, midY - lineThickness / 2,
-                   sideLen + lineThickness / 2, lineThickness),
-        CGRectMake(midX - lineThickness / 2, midY - lineThickness / 2,
-                   lineThickness, sideLen + lineThickness / 2)
+        CGRectMake(minX, midY - lineWidth / 2,
+                   (sideLen / 2) + lineWidth / 2, lineWidth),
+        CGRectMake(midX - lineWidth / 2, minY, lineWidth,
+                   (sideLen / 2) + lineWidth / 2),
+        CGRectMake(midX - lineWidth / 2, midY - lineWidth / 2,
+                   sideLen + lineWidth / 2, lineWidth),
+        CGRectMake(midX - lineWidth / 2, midY - lineWidth / 2,
+                   lineWidth, sideLen + lineWidth / 2)
     };
     
     // gradient paths, starting with left, going CW
     CGPoint pointPairs[4][2] = {
-        {CGPointMake(minX, midY), CGPointMake(midX + lineThickness / 2, midY)},
-        {CGPointMake(midX, minY), CGPointMake(midX, midY + lineThickness / 2)},
-        {CGPointMake(maxX, midY), CGPointMake(midX - lineThickness / 2, midY)},
-        {CGPointMake(midX, maxY), CGPointMake(midX, midY - lineThickness / 2)}
+        {CGPointMake(minX, midY), CGPointMake(midX + lineWidth / 2, midY)},
+        {CGPointMake(midX, minY), CGPointMake(midX, midY + lineWidth / 2)},
+        {CGPointMake(maxX, midY), CGPointMake(midX - lineWidth / 2, midY)},
+        {CGPointMake(midX, maxY), CGPointMake(midX, midY - lineWidth / 2)}
     };
     
     // perform clip/gradient operation for all four lines

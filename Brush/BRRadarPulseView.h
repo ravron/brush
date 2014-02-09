@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BRRadarPulseView : UIView
+@protocol BRRadarPulseViewDelegate <NSObject>
 
-- (void)generatePulse;
+- (void)radarPulseViewFinishedAnimation;
 
 @end
+
+@interface BRRadarPulseView : UIView
+
+@property (nonatomic) BOOL animating;
+@property (weak, nonatomic) id <BRRadarPulseViewDelegate> delegate;
+
+@end
+

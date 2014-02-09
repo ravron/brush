@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "BRRadarBackgroundView.h"
+#import "BRRadarPulseView.h"
 
-@interface BRRadarView : UIView
+@interface BRRadarView : UIView <BRRadarPulseViewDelegate>
 
+@property (nonatomic) BOOL animating;
 
 @end

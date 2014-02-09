@@ -8,24 +8,113 @@
 
 #import "BRRadarPulseView.h"
 
+
+
+@interface BRRadarPulseView ()
+{
+    CGFloat animationDuration;
+    CGFloat fractionOfDurationDelay;
+    CGFloat lineWidth;
+    CGFloat sideLen, minX, midX, maxX, minY, midY, maxY;
+    UIColor *strokeColor;
+}
+@property BOOL newPulse;
+@property (strong, nonatomic) CAShapeLayer *shapeLayer;
+@property (strong, nonatomic) CAAnimationGroup *animationGroup;
+@end
+
 @implementation BRRadarPulseView
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        NSAssert(frame.size.height == frame.size.width, @"BRRadarPulseView must be instantiated with a square frame!");
+        // constants
+        animationDuration = 2.25;
+        fractionOfDurationDelay = .35;
+        lineWidth = 6;
+        
+        sideLen = frame.size.height;
+        minX = minY = 0;
+        midX = midY = CGRectGetMidX(frame);
+        maxX = maxY = CGRectGetMaxX(frame);
+        strokeColor = [UIColor greenColor];
+        
+        // inits
+        _shapeLayer = [[CAShapeLayer alloc] init];
+        _shapeLayer.strokeColor = [[UIColor clearColor] CGColor];
+        _shapeLayer.fillColor = [[UIColor clearColor] CGColor];
+        _shapeLayer.lineWidth = lineWidth;
+        [[self layer] addSublayer:_shapeLayer];
     }
     return self;
 }
 
+- (CAAnimationGroup *)animationGroup
+{
+    
+    CGRect initialPulseRect = CGRectMake(midX - lineWidth / 2,
+                                         midY - lineWidth / 2,
+                                         lineWidth, lineWidth);
+    CGRect finalPulseRect = CGRectMake(minX + lineWidth / 2,
+                                       minY + lineWidth / 2,
+                                       sideLen - lineWidth,
+                                       sideLen - lineWidth);
+    UIBezierPath *initialUIPath = [UIBezierPath bezierPathWithOvalInRect:initialPulseRect];
+    UIBezierPath *finalUIPath = [UIBezierPath bezierPathWithOvalInRect:finalPulseRect];
+    
+    _animationGroup = [CAAnimationGroup animation];
+    _animationGroup.duration = animationDuration * (1 + fractionOfDurationDelay);
+    _animationGroup.delegate = self;
+    
+    CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
+    pathAnimation.duration = animationDuration;
+    pathAnimation.fromValue = (__bridge id)([initialUIPath CGPath]);
+    pathAnimation.toValue = (__bridge id)[finalUIPath CGPath];
+    
+    CAMediaTimingFunction *easeOut = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+    
+    CABasicAnimation *strokeColorAnimation = [CABasicAnimation animationWithKeyPath:@"strokeColor"];
+    strokeColorAnimation.duration = animationDuration;
+    strokeColorAnimation.fromValue = (__bridge id)[strokeColor CGColor];
+    strokeColorAnimation.toValue = (__bridge id)[[UIColor clearColor] CGColor];
+    strokeColorAnimation.timingFunction = easeOut;
+    strokeColorAnimation.cumulative = YES;
+    
+    _animationGroup.animations = @[strokeColorAnimation, pathAnimation];
+    return _animationGroup;
+}
+
+- (void)setAnimating:(BOOL)animating
+{
+    if (animating == _animating)
+        return;
+    if (_animating == NO && animating == YES) {
+        _animating = YES;
+        [[self shapeLayer] addAnimation:self.animationGroup forKey:@"pulse:"];
+    } else if (_animating == YES && animating == NO) {
+        _animating = NO;
+    }
+}
+
+#pragma mark - CAAnimationDelegate
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    if (self.delegate) {
+        [self.delegate radarPulseViewFinishedAnimation];
+    }
+    if (self.animating) {
+        [[self shapeLayer] addAnimation:self.animationGroup forKey:@"pulse"];
+    }
+}
+
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-    // Drawing code
+    
 }
-*/
+ */
 
 @end

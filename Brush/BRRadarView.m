@@ -11,6 +11,7 @@
 @interface BRRadarView ()
 
 @property (strong, nonatomic) BRRadarBackgroundView *backgroundView;
+@property (strong, nonatomic) BRRadarPulseView *pulseView;
 
 @end
 
@@ -22,12 +23,33 @@
     if (self) {
         NSAssert(frame.size.height == frame.size.width, @"BRRadarView must be instantiated with a square frame!");
         
-        CGRect bgRect = CGRectMake(0, 0, frame.size.width, frame.size.height);
-        _backgroundView = [[BRRadarBackgroundView alloc] initWithFrame:bgRect];
-//        [self setBackgroundColor:[UIColor redColor]];
+        CGRect subviewRect = CGRectMake(0, 0, frame.size.width, frame.size.height);
+        _backgroundView = [[BRRadarBackgroundView alloc] initWithFrame:subviewRect];
         [self addSubview:_backgroundView];
+        
+        _pulseView = [[BRRadarPulseView alloc] initWithFrame:subviewRect];
+        [self addSubview:_pulseView];
     }
     return self;
+}
+
+- (void)setAnimating:(BOOL)animating
+{
+    if (_animating == animating)
+        return;
+    
+    if (_animating == NO && animating == YES) {
+        _animating = YES;
+        [[self pulseView] setAnimating:YES];
+    } else if (_animating == YES && animating == NO) {
+        _animating = NO;
+        [[self pulseView] setAnimating:NO];
+    }
+}
+
+- (void)radarPulseViewFinishedAnimation
+{
+    
 }
 
 /*
