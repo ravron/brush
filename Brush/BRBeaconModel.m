@@ -58,6 +58,7 @@ NSString *const longitudeKey = @"lon";
 {
     NSLog(@"Beginning monitor");
     [[self locationManager] startMonitoringForRegion:[self detectRegion]];
+    [[self locationManager] startRangingBeaconsInRegion:[self detectRegion]];
     [self setIsMonitoring:YES];
     //NSLog(@"Monitoring %d regions", [[[self locationManager] monitoredRegions] count]);
 }
@@ -67,8 +68,6 @@ NSString *const longitudeKey = @"lon";
     NSLog(@"Ending monitor");
     [[self locationManager] stopMonitoringForRegion:[self detectRegion]];
     [[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
-    
-    
     [self setIsMonitoring:NO];
 }
 
@@ -221,21 +220,32 @@ NSString *const longitudeKey = @"lon";
  */
 
 - (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
-{
+{   
     switch (state) {
         case CLRegionStateInside:
-            NSLog(@"Entered region, commencing ranging");
-            [[self locationManager] startRangingBeaconsInRegion:[self detectRegion]];
+            NSLog(@"Entered region %@, commencing ranging", region.identifier);
+            //[[self locationManager] startRangingBeaconsInRegion:[self detectRegion]];
             break;
             
         case CLRegionStateOutside:
-            NSLog(@"Exited region, ceasing ranging");
-            [[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
+            NSLog(@"Exited region %@, ceasing ranging", region.identifier);
+            //[[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
             break;
             
         default:
+            NSLog(@"Determined other state for region %@!", region.identifier);
             break;
     }
+}
+
+- (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
+{
+    NSLog(@"Monitoring failure in region %@", region.identifier);
+}
+
+- (void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
+{
+    NSLog(@"Started monitoring for region %@", region.identifier);
 }
 
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region
@@ -243,11 +253,9 @@ NSString *const longitudeKey = @"lon";
     for (CLBeacon *b in beacons) {
         // check that proximity is "near" or "immediate"
         CLProximity proximity = b.proximity;
-        NSInteger rssi = b.rssi;
-        NSLog(@"RSSI: %ld", (long)rssi);
         if (proximity != CLProximityNear && proximity != CLProximityImmediate) {
             // if not, continue
-//            NSLog(@"Beacon in proximity, but not close enough.");
+            //NSLog(@"Beacon in proximity, but not close enough.");
             continue;
         }
         
