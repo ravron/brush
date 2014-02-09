@@ -67,8 +67,14 @@ NSString *const longitudeKey = @"lon";
     NSLog(@"Ending monitor");
     [[self locationManager] stopMonitoringForRegion:[self detectRegion]];
     [[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
+    
+    
     [self setIsMonitoring:NO];
-    //NSLog(@"Monitoring %d regions", [[[self locationManager] monitoredRegions] count]);
+}
+
+- (NSUInteger)numRegionsMonitored
+{
+    return [[[self locationManager] monitoredRegions] count];
 }
 
 - (void)beginBroadcastingWithMajor:(uint16_t)major minor:(uint16_t)minor

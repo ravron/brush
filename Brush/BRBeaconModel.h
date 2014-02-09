@@ -25,4 +25,6 @@
 - (void)beginBroadcastingWithMajor:(uint16_t)major minor:(uint16_t)minor;
 - (void)endBroadcasting;
 
+- (NSUInteger)numRegionsMonitored;
+
 @end

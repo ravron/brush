@@ -36,6 +36,8 @@
     [[self twitterTextfield] setPlaceholder:@"Twitter Handle"];
     [[self loginTextfield] setAutocorrectionType:UITextAutocorrectionTypeNo];
     [[self twitterTextfield] setAutocorrectionType:UITextAutocorrectionTypeNo];
+    
+    NSLog(@"At load-time, %ld regions monitored", (unsigned long)[[self beaconModel] numRegionsMonitored]);
 }
 
 - (IBAction)CreateAccount:(UIButton *)sender {
@@ -168,5 +170,10 @@
     [[self beaconModel] beginBroadcastingWithMajor:[self major] minor:[self minor]];
 }
 
+- (void)endLocationServices
+{
+    [[self beaconModel] endBroadcasting];
+    [[self beaconModel] endMonitoring];
+}
 
 @end
