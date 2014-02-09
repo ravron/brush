@@ -110,6 +110,13 @@
     if([[self beaconModel] isTransmitting] || [[self beaconModel] isMonitoring]){
         [[self beaconModel] endBroadcasting];
         [[self beaconModel] endMonitoring];
+        [[self loginButton] setTitle:@"Login" forState:(UIControlStateNormal)];
+        
+        [self loginTextfield].enabled = YES;
+        [self twitterTextfield].enabled = YES;
+        
+        [self createButton].enabled = YES;
+        
         return;
     }
     
@@ -178,6 +185,11 @@
                                    
                                 
                                    [[self loginTextfield] resignFirstResponder];
+                                   [[self loginButton] setTitle:@"Logout" forState:(UIControlStateNormal)];
+                                   
+                                   [self loginTextfield].enabled = NO;
+                                   [self twitterTextfield].enabled = NO;
+                                   [self createButton].enabled = NO;
                                    
                                    [self beginBroadcast];
                                }
