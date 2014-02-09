@@ -20,6 +20,7 @@ const NSInteger downwardAnimationDistance = 115;
 {
     if (self = [super initWithCoder:aDecoder]) {
         _beaconModel = [[BRBeaconModel alloc] init];
+        _beaconModel.delegate = self;
     }
     
     return self;
@@ -44,6 +45,7 @@ const NSInteger downwardAnimationDistance = 115;
     
     CGRect radarRect = CGRectMake(10, 165, 300, 300);
     [self setRadarView:[[BRRadarView alloc] initWithFrame:radarRect]];
+    [[self radarView] setAlpha:0];
     [[self view] addSubview:[self radarView]];
 }
 
@@ -60,6 +62,8 @@ const NSInteger downwardAnimationDistance = 115;
         [alert show];
 #warning FOR TEST
         [[self radarView] setAnimating:(![[self radarView] animating])];
+        [[self radarView] setDistanceFraction:0.75];
+        [[self radarView] setPinging:(![[self radarView] pinging])];
         return;
     }
 
@@ -126,6 +130,7 @@ const NSInteger downwardAnimationDistance = 115;
         
         [self createButton].enabled = YES;
         
+        /*
         [UIView animateWithDuration:0.75
                          animations:^(void) {
                              CGRect oldFrame = [[self bg] frame];
@@ -135,6 +140,11 @@ const NSInteger downwardAnimationDistance = 115;
                                                           oldFrame.size.height);
                              
                              [[self bg] setFrame:newFrame];
+                         }];*/
+        [UIView animateWithDuration:0.75
+                         animations:^(void) {
+                             [[self bg] setAlpha:1];
+                             [[self radarView] setAlpha:0];
                          }];
         
         return;
@@ -204,6 +214,7 @@ const NSInteger downwardAnimationDistance = 115;
         [self twitterTextfield].enabled = NO;
         [self createButton].enabled = NO;
         
+        /*
         [UIView animateWithDuration:0.75
                          animations:^(void) {
                              CGRect oldFrame = [[self bg] frame];
@@ -214,6 +225,12 @@ const NSInteger downwardAnimationDistance = 115;
                              
                              [[self bg] setFrame:newFrame];
                          }];
+         */
+        [UIView animateWithDuration:0.75
+                         animations:^(void) {
+                             [[self bg] setAlpha:0];
+                             [[self radarView] setAlpha:1];
+                         }];
         
         [self beginBroadcast];
     }
@@ -223,12 +240,35 @@ const NSInteger downwardAnimationDistance = 115;
 {
     [[self beaconModel] beginMonitoring];
     [[self beaconModel] beginBroadcastingWithMajor:[self major] minor:[self minor]];
+    [[self radarView] setAnimating:YES];
 }
 
 - (void)endLocationServices
 {
     [[self beaconModel] endBroadcasting];
     [[self beaconModel] endMonitoring];
+    [[self radarView] setAnimating:NO];
+}
+
+#pragma mark - BRBeaconModelDelegate
+
+- (void)beaconDetected
+{
+    [[self radarView] setPinging:YES];
+    [[self radarView] setDistanceFraction:1];
+}
+
+- (void)beaconLost
+{
+    [[self radarView] setPinging:NO];
+    [[self radarView] setDistanceFraction:1];
+}
+
+- (void)beaconDetectedWithStrength:(CGFloat)strength
+{
+    NSLog(@"Beacon detected w/ strength %f in VC", strength);
+    [[self radarView] setPinging:YES];
+    [[self radarView] setDistanceFraction:strength];
 }
 
 @end

@@ -10,14 +10,23 @@
 #import <CoreLocation/CoreLocation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 
+@protocol BRBeaconModelDelegate <NSObject>
+
+- (void)beaconDetected;
+- (void)beaconLost;
+- (void)beaconDetectedWithStrength:(CGFloat)strength;
+
+@end
+
 @interface BRBeaconModel : NSObject <CLLocationManagerDelegate, CBPeripheralManagerDelegate>
 {
     // ivars
 }
 
 // properties
-@property (readonly) BOOL isMonitoring;
-@property (readonly) BOOL isTransmitting;
+@property (readonly, nonatomic) BOOL isMonitoring;
+@property (readonly, nonatomic) BOOL isTransmitting;
+@property (weak, nonatomic) id <BRBeaconModelDelegate> delegate;
 
 // methods
 - (void)beginMonitoring;

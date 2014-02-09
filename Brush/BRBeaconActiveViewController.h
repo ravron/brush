@@ -10,7 +10,7 @@
 #import "BRBeaconModel.h"
 #import "BRRadarView.h"
 
-@interface BRBeaconActiveViewController : UIViewController
+@interface BRBeaconActiveViewController : UIViewController <BRBeaconModelDelegate>
 
 @property (strong, nonatomic) BRBeaconModel *beaconModel;
 

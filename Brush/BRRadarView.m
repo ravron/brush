@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) BRRadarBackgroundView *backgroundView;
 @property (strong, nonatomic) BRRadarPulseView *pulseView;
+@property (strong, nonatomic) BRRadarPingView *pingView;
 
 @end
 
@@ -27,10 +28,22 @@
         _backgroundView = [[BRRadarBackgroundView alloc] initWithFrame:subviewRect];
         [self addSubview:_backgroundView];
         
+        _pingView = [[BRRadarPingView alloc] initWithFrame:subviewRect];
+        [self addSubview:_pingView];
+        
         _pulseView = [[BRRadarPulseView alloc] initWithFrame:subviewRect];
+        _pulseView.delegate = self;
         [self addSubview:_pulseView];
+
     }
     return self;
+}
+
+- (void)setDistanceFraction:(CGFloat)distanceFraction
+{
+    NSAssert(distanceFraction <= 1.0 && distanceFraction >= 0, @"Invalid distance fraction of %f given!", distanceFraction);
+    _distanceFraction = distanceFraction;
+    [[self pulseView] setCallbackFraction:distanceFraction];
 }
 
 - (void)setAnimating:(BOOL)animating
@@ -47,9 +60,12 @@
     }
 }
 
-- (void)radarPulseViewFinishedAnimation
+- (void)radarPulseAchievedCallbackFraction
 {
-    
+    if (self.pinging) {
+//        NSLog(@"Trying to display ping");
+        [[self pingView] displayPing:[self distanceFraction]];
+    }
 }
 
 /*

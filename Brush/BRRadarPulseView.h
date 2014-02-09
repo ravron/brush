@@ -10,7 +10,7 @@
 
 @protocol BRRadarPulseViewDelegate <NSObject>
 
-- (void)radarPulseViewFinishedAnimation;
+- (void)radarPulseAchievedCallbackFraction;
 
 @end
 
@@ -18,6 +18,7 @@
 
 @property (nonatomic) BOOL animating;
 @property (weak, nonatomic) id <BRRadarPulseViewDelegate> delegate;
+@property (nonatomic) CGFloat callbackFraction;
 
 @end
 

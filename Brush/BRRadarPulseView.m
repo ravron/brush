@@ -73,14 +73,10 @@
     pathAnimation.fromValue = (__bridge id)([initialUIPath CGPath]);
     pathAnimation.toValue = (__bridge id)[finalUIPath CGPath];
     
-    CAMediaTimingFunction *easeOut = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-    
     CABasicAnimation *strokeColorAnimation = [CABasicAnimation animationWithKeyPath:@"strokeColor"];
     strokeColorAnimation.duration = animationDuration;
     strokeColorAnimation.fromValue = (__bridge id)[strokeColor CGColor];
     strokeColorAnimation.toValue = (__bridge id)[[UIColor clearColor] CGColor];
-    strokeColorAnimation.timingFunction = easeOut;
-    strokeColorAnimation.cumulative = YES;
     
     _animationGroup.animations = @[strokeColorAnimation, pathAnimation];
     return _animationGroup;
@@ -98,16 +94,29 @@
     }
 }
 
+- (void)sendCallback
+{
+    if (self.delegate) {
+        [self.delegate radarPulseAchievedCallbackFraction];
+//        NSLog(@"Sending pulse achieved callback");
+    }
+}
+
 #pragma mark - CAAnimationDelegate
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    if (self.delegate) {
-        [self.delegate radarPulseViewFinishedAnimation];
-    }
     if (self.animating) {
         [[self shapeLayer] addAnimation:self.animationGroup forKey:@"pulse"];
     }
+}
+
+- (void)animationDidStart:(CAAnimation *)anim
+{
+    NSTimeInterval delay = self.callbackFraction * animationDuration;
+    [self performSelector:@selector(sendCallback)
+               withObject:nil
+               afterDelay:delay];
 }
 
 /*

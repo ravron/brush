@@ -224,12 +224,18 @@ NSString *const longitudeKey = @"lon";
 {   
     switch (state) {
         case CLRegionStateInside:
-            NSLog(@"Entered region %@, commencing ranging", region.identifier);
+            NSLog(@"Entered region %@", region.identifier);
+            if (self.delegate) {
+                [self.delegate beaconDetected];
+            }
             //[[self locationManager] startRangingBeaconsInRegion:[self detectRegion]];
             break;
             
         case CLRegionStateOutside:
-            NSLog(@"Exited region %@, ceasing ranging", region.identifier);
+            NSLog(@"Exited region %@", region.identifier);
+            if (self.delegate) {
+                [self.delegate beaconLost];
+            }
             //[[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
             break;
             
@@ -252,15 +258,34 @@ NSString *const longitudeKey = @"lon";
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region
 {
     for (CLBeacon *b in beacons) {
-        // check that proximity is "near" or "immediate"
         CLProximity proximity = b.proximity;
+        CGFloat proxAmount = 1;
+        switch (proximity) {
+            case CLProximityImmediate:
+                proxAmount = 0.2;
+                break;
+            case CLProximityNear:
+                proxAmount = 0.5;
+                break;
+            case CLProximityFar:
+                proxAmount = 0.8;
+                break;
+            default:
+                break;
+        }
+        
+        if (self.delegate) {
+            [self.delegate beaconDetectedWithStrength:proxAmount];
+        }
+        
+        // check that proximity is "near" or "immediate"
         if (proximity != CLProximityNear && proximity != CLProximityImmediate) {
             // if not, continue
             NSLog(@"Beacon in proximity, but not close enough.");
             continue;
         }
         
-        NSLog(@"Beacon in proximity!");
+//        NSLog(@"Beacon in proximity!");
         
         // generate beacon ID as a 32-bit number, with the major as the more significant bits
         NSNumber *beaconID = [self numberWithMajor:[b.major unsignedIntegerValue]
@@ -315,7 +340,7 @@ NSString *const longitudeKey = @"lon";
                 [[self locationManager] startUpdatingLocation];
             } else {
                 // otherwise reset the timestamp to start counting down another two hours
-                NSLog(@"Timestamp prohibited another brush");
+//                NSLog(@"Times tamp prohibited another brush");
                 objTimestamp = timestamp;
             }
         } else {

@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum _BRPingDistance {
+    BRPingDistanceImmediate = 0,
+    BRPingDistanceNear,
+    BRPingDistanceFar
+} BRPingDistance;
+
 @interface BRRadarPingView : UIView
+
+- (void)displayPing:(CGFloat)pingRatio;
 
 @end
