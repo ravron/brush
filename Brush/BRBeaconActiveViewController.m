@@ -8,6 +8,8 @@
 
 #import "BRBeaconActiveViewController.h"
 
+const NSInteger downwardAnimationDistance = 115;
+
 @interface BRBeaconActiveViewController ()
 
 @end
@@ -38,6 +40,11 @@
     [[self twitterTextfield] setPlaceholder:@"Twitter Handle"];
     [[self loginTextfield] setAutocorrectionType:UITextAutocorrectionTypeNo];
     [[self twitterTextfield] setAutocorrectionType:UITextAutocorrectionTypeNo];
+    
+    
+    CGRect radarRect = CGRectMake(10, 165, 300, 300);
+    [self setRadarView:[[BRRadarView alloc] initWithFrame:radarRect]];
+    [[self view] addSubview:[self radarView]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -117,6 +124,17 @@
         
         [self createButton].enabled = YES;
         
+        [UIView animateWithDuration:0.75
+                         animations:^(void) {
+                             CGRect oldFrame = [[self bg] frame];
+                             CGRect newFrame = CGRectMake(oldFrame.origin.x,
+                                                          oldFrame.origin.y - downwardAnimationDistance,
+                                                          oldFrame.size.width,
+                                                          oldFrame.size.height);
+                             
+                             [[self bg] setFrame:newFrame];
+                         }];
+        
         return;
     }
     
@@ -156,46 +174,48 @@
                                NSString *dataString = [[NSString alloc] initWithData:data
                                                                             encoding:NSUTF8StringEncoding];
                                NSLog(@"%@", dataString);
+                               [self handleLoginResponse:dataString];
+                           }];
+}
 
-                               BOOL valid;
-                               NSCharacterSet *digitCharSet = [NSCharacterSet decimalDigitCharacterSet];
-                               NSCharacterSet *inStringCharSet = [NSCharacterSet characterSetWithCharactersInString:dataString];
-                               valid = [digitCharSet isSupersetOfSet:inStringCharSet];
-                               
-                               if(valid == FALSE){
-                                   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Login failed" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                   [alert show];
-                               } else {
-                                   unsigned int majorMinor = dataString.intValue;
-                                   [self setMinor: majorMinor & (0x0000FFFF)];
-                                   [self setMajor:(majorMinor >> 16) & (0x0000FFFF)];
-                                   
-                                   NSLog(@"Maj: %d Min: %d", [self major], [self minor]);
-                                   
-                                   
-                                   /*[UIView animateWithDuration:2
-                                                    animations:^(void){
-                                                        [self loginTextfield].hidden = YES;
-                                                        [self twitterTextfield].hidden = YES;
-                                                        [self loginButton].hidden = YES;
-                                                        [self createButton].hidden = YES;
-                                                        [self logoutButton].hidden = NO;
-                                                    }];*/
-                                   
-                                   
-                                
-                                   [[self loginTextfield] resignFirstResponder];
-                                   [[self loginButton] setTitle:@"Logout" forState:(UIControlStateNormal)];
-                                   
-                                   [self loginTextfield].enabled = NO;
-                                   [self twitterTextfield].enabled = NO;
-                                   [self createButton].enabled = NO;
-                                   
-                                   [self beginBroadcast];
-                               }
-                        }];
+- (void)handleLoginResponse:(NSString *)response
+{
+    BOOL valid;
+    NSCharacterSet *digitCharSet = [NSCharacterSet decimalDigitCharacterSet];
+    NSCharacterSet *inStringCharSet = [NSCharacterSet characterSetWithCharactersInString:response];
+    valid = [digitCharSet isSupersetOfSet:inStringCharSet];
     
+    if (valid == FALSE) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nice try!" message:@"Login failed" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    } else {
+        unsigned int majorMinor = response.intValue;
+        [self setMinor: majorMinor & (0x0000FFFF)];
+        [self setMajor:(majorMinor >> 16) & (0x0000FFFF)];
+        
+        NSLog(@"Maj: %d Min: %d", [self major], [self minor]);
+        
+        [[self loginTextfield] resignFirstResponder];
+        [[self loginButton] setTitle:@"Logout" forState:(UIControlStateNormal)];
+        
+        [self loginTextfield].enabled = NO;
+        [self twitterTextfield].enabled = NO;
+        [self createButton].enabled = NO;
+        
+        [UIView animateWithDuration:0.75
+                         animations:^(void) {
+                             CGRect oldFrame = [[self bg] frame];
+                             CGRect newFrame = CGRectMake(oldFrame.origin.x,
+                                                          oldFrame.origin.y + downwardAnimationDistance,
+                                                          oldFrame.size.width,
+                                                          oldFrame.size.height);
+                             
+                             [[self bg] setFrame:newFrame];
+                         }];
+        
+        [self beginBroadcast];
     }
+}
 
 - (void) beginBroadcast
 {

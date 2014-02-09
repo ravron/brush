@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		118FF06518A73FC900E18548 /* BRRadarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 118FF06418A73FC900E18548 /* BRRadarView.m */; };
+		118FF06918A740A200E18548 /* BRRadarBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 118FF06818A740A200E18548 /* BRRadarBackgroundView.m */; };
+		118FF06C18A740CE00E18548 /* BRRadarPulseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 118FF06B18A740CE00E18548 /* BRRadarPulseView.m */; };
+		118FF06F18A740DE00E18548 /* BRRadarPingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 118FF06E18A740DE00E18548 /* BRRadarPingView.m */; };
 		11E37FBE18A60B1B0042B65B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FBD18A60B1B0042B65B /* Foundation.framework */; };
 		11E37FC018A60B1B0042B65B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FBF18A60B1B0042B65B /* CoreGraphics.framework */; };
 		11E37FC218A60B1B0042B65B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E37FC118A60B1B0042B65B /* UIKit.framework */; };
@@ -40,6 +44,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		118FF06318A73FC900E18548 /* BRRadarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRRadarView.h; sourceTree = "<group>"; };
+		118FF06418A73FC900E18548 /* BRRadarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRRadarView.m; sourceTree = "<group>"; };
+		118FF06718A740A200E18548 /* BRRadarBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRRadarBackgroundView.h; sourceTree = "<group>"; };
+		118FF06818A740A200E18548 /* BRRadarBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRRadarBackgroundView.m; sourceTree = "<group>"; };
+		118FF06A18A740CE00E18548 /* BRRadarPulseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRRadarPulseView.h; sourceTree = "<group>"; };
+		118FF06B18A740CE00E18548 /* BRRadarPulseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRRadarPulseView.m; sourceTree = "<group>"; };
+		118FF06D18A740DE00E18548 /* BRRadarPingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRRadarPingView.h; sourceTree = "<group>"; };
+		118FF06E18A740DE00E18548 /* BRRadarPingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRRadarPingView.m; sourceTree = "<group>"; };
 		11E37FBA18A60B1B0042B65B /* Brush.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Brush.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11E37FBD18A60B1B0042B65B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		11E37FBF18A60B1B0042B65B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -94,6 +106,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		118FF06618A7408600E18548 /* RadarView Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				118FF06718A740A200E18548 /* BRRadarBackgroundView.h */,
+				118FF06818A740A200E18548 /* BRRadarBackgroundView.m */,
+				118FF06A18A740CE00E18548 /* BRRadarPulseView.h */,
+				118FF06B18A740CE00E18548 /* BRRadarPulseView.m */,
+				118FF06D18A740DE00E18548 /* BRRadarPingView.h */,
+				118FF06E18A740DE00E18548 /* BRRadarPingView.m */,
+			);
+			name = "RadarView Subviews";
+			sourceTree = "<group>";
+		};
 		11E37FB118A60B1B0042B65B = {
 			isa = PBXGroup;
 			children = (
@@ -139,6 +164,9 @@
 				11E37FD618A60B1B0042B65B /* BRBeaconActiveViewController.m */,
 				11E37FF518A6132E0042B65B /* BRBeaconModel.h */,
 				11E37FF618A6132E0042B65B /* BRBeaconModel.m */,
+				118FF06318A73FC900E18548 /* BRRadarView.h */,
+				118FF06418A73FC900E18548 /* BRRadarView.m */,
+				118FF06618A7408600E18548 /* RadarView Subviews */,
 				11E37FD818A60B1B0042B65B /* Images.xcassets */,
 				11E37FC418A60B1B0042B65B /* Supporting Files */,
 			);
@@ -283,9 +311,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				11E37FD718A60B1B0042B65B /* BRBeaconActiveViewController.m in Sources */,
+				118FF06C18A740CE00E18548 /* BRRadarPulseView.m in Sources */,
 				11E37FCE18A60B1B0042B65B /* BRAppDelegate.m in Sources */,
+				118FF06F18A740DE00E18548 /* BRRadarPingView.m in Sources */,
 				11E37FF718A6132E0042B65B /* BRBeaconModel.m in Sources */,
 				11E37FCA18A60B1B0042B65B /* main.m in Sources */,
+				118FF06518A73FC900E18548 /* BRRadarView.m in Sources */,
+				118FF06918A740A200E18548 /* BRRadarBackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

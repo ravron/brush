@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BRBeaconModel.h"
+#import "BRRadarView.h"
 
 @interface BRBeaconActiveViewController : UIViewController
 
@@ -16,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *loginTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *twitterTextfield;
 @property (weak, nonatomic) IBOutlet UIImageView *bg;
+@property (strong, nonatomic) BRRadarView *radarView;
 
 
 @property (weak, nonatomic) IBOutlet UIButton *createButton;
