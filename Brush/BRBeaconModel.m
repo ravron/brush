@@ -204,6 +204,7 @@ NSString *const longitudeKey = @"lon";
 #pragma mark - CLLocationManagerDelegate
 #pragma mark Beacon methods
 
+/*
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
     return;
@@ -217,16 +218,20 @@ NSString *const longitudeKey = @"lon";
     NSLog(@"Exited region");
     [[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
 }
+ */
 
 - (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
 {
     switch (state) {
         case CLRegionStateInside:
+            NSLog(@"Entered region, commencing ranging");
             [[self locationManager] startRangingBeaconsInRegion:[self detectRegion]];
             break;
             
         case CLRegionStateOutside:
+            NSLog(@"Exited region, ceasing ranging");
             [[self locationManager] stopRangingBeaconsInRegion:[self detectRegion]];
+            break;
             
         default:
             break;
@@ -236,7 +241,13 @@ NSString *const longitudeKey = @"lon";
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region
 {
     for (CLBeacon *b in beacons) {
-        //NSLog(@"Maj:%@ Min:%@", b.major, b.minor);
+        // check that proximity is "near" or "immediate"
+        CLProximity proximity = b.proximity;
+        if (proximity != CLProximityNear && proximity != CLProximityImmediate) {
+            // if not, continue
+            NSLog(@"Beacon in proximity, but not close enough.");
+            continue;
+        }
         
         // generate beacon ID as a 32-bit number, with the major as the more significant bits
         NSNumber *beaconID = [self numberWithMajor:[b.major unsignedIntegerValue]
